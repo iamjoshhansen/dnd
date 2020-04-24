@@ -1,0 +1,11 @@
+<h2>Spells</h2>
+
+<div class="search">
+  <input placeholder="search" [(ngModel)]="search" />
+</div>
+
+<ul class="grid-list">
+  <li *ngFor="let item of filteredResults | async" class="grid-list--item">
+    <a [routerLink]="['/spell',item.index]">{{ item.name }}</a>
+  </li>
+</ul>

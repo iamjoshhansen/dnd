@@ -1,0 +1,44 @@
+<app-loading *ngIf="!(spell | async)"></app-loading>
+<div *ngIf="!!(spell | async)" class="spell">
+  <h3 class="name">{{ (spell | async).name }}</h3>
+
+  <section class="stats">
+    <h3>Stats</h3>
+    <dl>
+      <dt>Level</dt>
+      <dd>{{ (spell | async).level }}</dd>
+      <dt>Range</dt>
+      <dd>{{ (spell | async).range }}</dd>
+      <dt>Casting Time</dt>
+      <dd>{{ (spell | async).casting_time }}</dd>
+      <dt>Duration</dt>
+      <dd>{{ (spell | async).duration }}</dd>
+      <dt>Concentration</dt>
+      <dd>{{ (spell | async).concentration ? 'no' : 'yes' }}</dd>
+      <dt>Components</dt>
+      <dd><span *ngFor="let component of (spell | async).components">{{ component }} </span></dd>
+      <dt>Material</dt>
+      <dd>{{ (spell | async).material || '(none)' }}</dd>
+      <dt>Ritual</dt>
+      <dd>{{ (spell | async).ritual ? 'no' : 'yes' }}</dd>
+      <dt>Classes</dt>
+      <dd>
+        <div *ngFor="let class of (spell | async).classes">
+          <a [routerLink]="['/class',class.name.toLowerCase()]">{{ class.name }}</a>
+        </div>
+      </dd>
+    </dl>
+  </section>
+
+  <section class="desc">
+    <div *ngIf="(spell | async).desc && (spell | async).desc.length > 0">
+      <h3>Description</h3>
+      <p class="description" *ngFor="let desc of (spell | async).desc">{{ desc }}</p>
+    </div>
+
+    <div *ngIf="(spell | async).higher_level && (spell | async).higher_level.length > 0">
+      <h3>Higher Level</h3>
+      <p class="description" *ngFor="let desc of (spell | async).higher_level">{{ desc }}</p>
+    </div>
+  </section>
+</div>

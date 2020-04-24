@@ -1,0 +1,59 @@
+:host {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  grid-template-columns: 1fr 200px;
+  align-items: baseline;
+  grid-template-areas:
+    'title   search'
+    'results results';
+}
+
+h2 {
+  font-size: 2em;
+  margin: 0 0 0.25em;
+  padding: 0;
+  grid-area: title;
+}
+
+.search {
+  grid-area: search;
+}
+
+input {
+  padding: 0.25em 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: none;
+  border-bottom: solid 1px #333;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: #09f;
+  }
+}
+
+.grid-list {
+  grid-area: results;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  gap: 0.25em;
+  column-width: 250px;
+
+  &--item {
+    // border: solid 1px #eee;
+    margin: 0 0 0.5em;
+    padding: 0;
+    // padding: 0.5em 1em;
+    // font-size: 0.75em;
+
+    // a {
+    //   display: block;
+    // }
+  }
+}
