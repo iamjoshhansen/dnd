@@ -33,6 +33,36 @@ export class AdventurerComponent implements OnInit {
   StatEnum = StatEnum;
   RaceEnum = RaceEnum;
 
+  stats: StatEnum[] = [
+    StatEnum.strength,
+    StatEnum.dexterity,
+    StatEnum.constitution,
+    StatEnum.intelligence,
+    StatEnum.wisdom,
+    StatEnum.charisma,
+  ];
+
+  skills: SkillEnum[] = [
+    SkillEnum.acrobatics,
+    SkillEnum.animalHandling,
+    SkillEnum.arcana,
+    SkillEnum.athltetics,
+    SkillEnum.deception,
+    SkillEnum.history,
+    SkillEnum.insight,
+    SkillEnum.intimidation,
+    SkillEnum.investigation,
+    SkillEnum.medicine,
+    SkillEnum.nature,
+    SkillEnum.perception,
+    SkillEnum.performance,
+    SkillEnum.persuasion,
+    SkillEnum.religion,
+    SkillEnum.sleightOfHand,
+    SkillEnum.stealth,
+    SkillEnum.suvival,
+  ];
+
   constructor() {}
 
   ngOnInit(): void {}

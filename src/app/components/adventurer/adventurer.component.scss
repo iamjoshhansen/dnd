@@ -190,6 +190,9 @@ select {
   .stat {
     border: solid 1px #555;
     text-align: center;
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    align-items: center;
 
     .stat-label {
       padding: 0.25em;
@@ -205,6 +208,34 @@ select {
       font-size: 1em;
       padding: 0.25em;
       border-bottom: none;
+    }
+  }
+}
+
+.skill-list {
+  display: grid;
+  gap: 0.5em;
+
+  .skill {
+    label {
+      white-space: nowrap;
+      display: flex;
+    }
+
+    &--modifier {
+      margin-left: 1em;
+      display: inline-block;
+      width: 2ch;
+      text-align: right;
+    }
+
+    &--label {
+      margin-left: 1em;
+    }
+
+    &--stat {
+      opacity: 0.5;
+      margin-left: 1em;
     }
   }
 }

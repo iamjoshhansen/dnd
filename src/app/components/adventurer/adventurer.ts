@@ -307,6 +307,10 @@ export class Adventurer {
     return this.stats[stat];
   }
 
+  setStat(stat: StatEnum, val: number) {
+    this.stats[stat] = val;
+  }
+
   statModifier(stat: StatEnum): number {
     const base = baseStatModifer(this.stats[stat]);
     const race = raceStatModifier(this.race, stat);
@@ -318,11 +322,19 @@ export class Adventurer {
     return this.skills[skill];
   }
 
-  skillModifier(skill: SkillEnum): number {
+  setSkill(skill: SkillEnum, has: boolean) {
+    this.skills[skill] = has;
+  }
+
+  modifiedSkill(skill: SkillEnum): number {
     const stat = skillMap[skill];
     return (
       this.statModifier(stat) +
       (this.hasSkill(skill) ? this.proficiencyBonus : 0)
     );
+  }
+
+  skillStat(skill: SkillEnum): StatEnum {
+    return skillMap[skill];
   }
 }

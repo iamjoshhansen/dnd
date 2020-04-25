@@ -93,35 +93,11 @@
 <main class="adventure-stats">
   <section class="skills">
     <ul class="stats">
-      <li class="stat">
-        <div class="stat-label">Strength</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.strength) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.strength" />
-      </li>
-      <li class="stat">
-        <div class="stat-label">Dexterity</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.dexterity) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.dexterity" />
-      </li>
-      <li class="stat">
-        <div class="stat-label">Constitution</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.constitution) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.constitution" />
-      </li>
-      <li class="stat">
-        <div class="stat-label">Intelligence</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.intelligence) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.intelligence" />
-      </li>
-      <li class="stat">
-        <div class="stat-label">Wisdom</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.wisdom) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.wisdom" />
-      </li>
-      <li class="stat">
-        <div class="stat-label">Charisma</div>
-        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.charisma) | modifier }}</div>
-        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.charisma" />
+      <li class="stat" *ngFor="let stat of stats">
+        <div class="stat-label">{{ stat }}</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(stat) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [value]="adventurer.getStat(stat)"
+          (change)="adventurer.setStat(stat, $event.target.value)" />
       </li>
     </ul>
     <div class="inspiration">inspiration</div>
@@ -130,7 +106,21 @@
       Proficiency Bonus
     </div>
     <div class="saving">saving</div>
-    <div class="skills">skills</div>
+    <div class="skills">
+
+      <ul class="skill-list">
+        <li class="skill" *ngFor="let skill of skills">
+          <label>
+            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSkill(skill)"
+              (change)="adventurer.setSkill(skill, $event.target.checked)" />
+            <span class="skill--modifier">{{ adventurer.modifiedSkill(skill) | modifier }}</span>
+            <span class="skill--label">{{ skill }}</span>
+            <span class="skill--stat">({{ adventurer.skillStat(skill).substring(0,3) }})</span>
+          </label>
+        </li>
+      </ul>
+
+    </div>
   </section>
   <section class="passive">passive</section>
   <section class="other">other</section>
