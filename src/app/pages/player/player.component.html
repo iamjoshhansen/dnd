@@ -66,7 +66,47 @@
 </header>
 
 <main class="adventure-stats">
-  <section class="skills">skills</section>
+  <section class="skills">
+    <ul class="stats">
+      <li class="stat">
+        <div class="stat-label">Strength</div>
+        <div class="stat-bonus">-1</div>
+        <div class="stat-base">7</div>
+      </li>
+      <li class="stat">
+        <div class="stat-label">Dexterity</div>
+        <div class="stat-bonus">0</div>
+        <div class="stat-base">7</div>
+      </li>
+      <li class="stat">
+        <div class="stat-label">Constitution</div>
+        <div class="stat-bonus">+1</div>
+        <div class="stat-base">7</div>
+      </li>
+      <li class="stat">
+        <div class="stat-label">Intelligence</div>
+        <div class="stat-bonus">+1</div>
+        <div class="stat-base">17</div>
+      </li>
+      <li class="stat">
+        <div class="stat-label">Wisdom</div>
+        <div class="stat-bonus">+1</div>
+        <div class="stat-base">7</div>
+      </li>
+      <li class="stat">
+        <div class="stat-label">Charisma</div>
+        <div class="stat-bonus">+1</div>
+        <div class="stat-base">5</div>
+      </li>
+    </ul>
+    <div class="inspiration">inspiration</div>
+    <div class="proficiency">
+      +{{ proficiencyBonusObserver | async }}
+      Proficiency Bonus
+    </div>
+    <div class="saving">saving</div>
+    <div class="skills">skills</div>
+  </section>
   <section class="passive">passive</section>
   <section class="other">other</section>
   <section class="battle">battle</section>

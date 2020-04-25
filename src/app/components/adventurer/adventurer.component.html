@@ -1,0 +1,142 @@
+<header class="header">
+  <div class="header-1">
+    <div class="input-set">
+      <label class="input-label">
+        <span class="text-label">Character Name</span>
+        <input class="input text-input" type="text" [(ngModel)]="adventurer.characterName" />
+      </label>
+    </div>
+  </div>
+
+  <div class="header-2">
+    <div class="input-set">
+      <label class="input-label two-part">
+        <span class="text-label">Class &amp; Level</span>
+        <select class="input text-input" [(ngModel)]="adventurer.class">
+          <option val="">...</option>
+          <option val="barbarian">Barbarian</option>
+          <option val="bard">Bard</option>
+          <option val="cleric">Cleric</option>
+          <option val="druid">Druid</option>
+          <option val="fighter">Fighter</option>
+          <option val="monk">Monk</option>
+          <option val="paladin">Paladin</option>
+          <option val="ranger">Ranger</option>
+          <option val="rogue">Rogue</option>
+          <option val="sorcerer">Sorcerer</option>
+          <option val="warlock">Warlock</option>
+          <option val="wizard">Wizard</option>
+        </select>
+        <input class="input input-2 number-input" type="number" [value]="adventurer.level"
+          [title]="adventurer.levelExplanation" readonly />
+      </label>
+    </div>
+
+    <div class="input-set">
+      <label class="input-label">
+        <span class="text-label">Background</span>
+        <input class="input text-input" type="text" />
+      </label>
+    </div>
+
+    <div class="input-set">
+      <label class="input-label">
+        <span class="text-label">Player Name</span>
+        <input class="input text-input" type="text" [(ngModel)]="adventurer.playerName" />
+      </label>
+    </div>
+
+    <div class="input-set">
+      <label class="input-label">
+        <span class="text-label">Race '{{ adventurer.race }}'</span>
+        <select class="input text-input" [(ngModel)]="adventurer.race">
+          <option val="">...</option>
+          <option val="dragonborn">{{ RaceEnum.dragonborn }}</option>
+          <option val="dwarf">{{ RaceEnum.dwarf }}</option>
+          <option val="elf">{{ RaceEnum.elf }}</option>
+          <option val="gnome">{{ RaceEnum.gnome }}</option>
+          <option val="halfElf">{{ RaceEnum.halfElf }}</option>
+          <option val="halfOrc">{{ RaceEnum.halfOrc }}</option>
+          <option val="halfling">{{ RaceEnum.halfling }}</option>
+          <option val="human">{{ RaceEnum.human }}</option>
+          <option val="tiefling">{{ RaceEnum.tiefling }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="input-set">
+      <label class="input-label two-part">
+        <span class="text-label">Alignment</span>
+        <select class="input text-input">
+          <option val="">...</option>
+          <option>Lawfull</option>
+          <option>Chaotic</option>
+        </select>
+        <select class="input input-2 text-input">
+          <option val="">...</option>
+          <option>Good</option>
+          <option>Nuetral</option>
+          <option>Evil</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="input-set">
+      <label class="input-label">
+        <span class="text-label">Experience Points</span>
+        <input [(ngModel)]="adventurer.xp" class="input text-input" type="number" min="0" />
+      </label>
+    </div>
+  </div>
+</header>
+
+<main class="adventure-stats">
+  <section class="skills">
+    <ul class="stats">
+      <li class="stat">
+        <div class="stat-label">Strength</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.strength) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.strength" />
+      </li>
+      <li class="stat">
+        <div class="stat-label">Dexterity</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.dexterity) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.dexterity" />
+      </li>
+      <li class="stat">
+        <div class="stat-label">Constitution</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.constitution) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.constitution" />
+      </li>
+      <li class="stat">
+        <div class="stat-label">Intelligence</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.intelligence) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.intelligence" />
+      </li>
+      <li class="stat">
+        <div class="stat-label">Wisdom</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.wisdom) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.wisdom" />
+      </li>
+      <li class="stat">
+        <div class="stat-label">Charisma</div>
+        <div class="stat-bonus">{{ adventurer.statModifier(StatEnum.charisma) | modifier }}</div>
+        <input class="input stat-base" type="number" min="0" max="24" [(ngModel)]="adventurer.charisma" />
+      </li>
+    </ul>
+    <div class="inspiration">inspiration</div>
+    <div class="proficiency">
+      +{{ adventurer.proficiencyBonus }}
+      Proficiency Bonus
+    </div>
+    <div class="saving">saving</div>
+    <div class="skills">skills</div>
+  </section>
+  <section class="passive">passive</section>
+  <section class="other">other</section>
+  <section class="battle">battle</section>
+  <section class="equipment">equipment</section>
+  <section class="personality">personality</section>
+  <section class="attacks">attacks</section>
+  <section class="features">features</section>
+</main>

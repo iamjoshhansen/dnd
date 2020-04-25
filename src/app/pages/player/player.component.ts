@@ -42,24 +42,39 @@ export class PlayerComponent implements OnInit {
   readonly levelObserver = this.xpObserver.pipe(
     map((xp) => {
       let level = 0;
-
       while (xp >= xpLevelValues[++level]) {}
-
       return level;
     }),
-    distinctUntilChanged(),
+    distinctUntilChanged()
   );
-  readonly levelExplanationObserver = combineLatest(this.xpObserver, this.levelObserver).pipe(
+  readonly levelExplanationObserver = combineLatest(
+    this.xpObserver,
+    this.levelObserver
+  ).pipe(
     map(([xp, level]) => {
       if (level === 20) {
-        return `You maxed out at level 20 with ${xpLevelValues[xpLevelValues.length - 1]}xp!`;
+        return `You maxed out at level 20 with ${
+          xpLevelValues[xpLevelValues.length - 1]
+        }xp!`;
       }
 
       const nextXp = xpLevelValues[level];
       const delta = nextXp - xp;
 
-      return `You will get to level ${level + 1} when you have ${nextXp}xp.\nOnly ${delta} more to go!`;
+      return `You will get to level ${
+        level + 1
+      } when you have ${nextXp}xp.\nOnly ${delta} more to go!`;
+    })
+  );
+
+  readonly proficiencyBonusObserver = this.levelObserver.pipe(
+    map((level) => {
+      const levelBonusMap = [0, 5, 9, 13, 17];
+      let bonus = 0;
+      while (level >= levelBonusMap[++bonus]) {}
+      return bonus + 1;
     }),
+    distinctUntilChanged()
   );
 
   constructor() {}
