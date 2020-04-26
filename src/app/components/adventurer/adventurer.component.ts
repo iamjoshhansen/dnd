@@ -20,7 +20,7 @@ export class AdventurerComponent implements OnInit {
     class: ClassEnum.wizard,
     race: RaceEnum.gnome,
     stats: {
-      [StatEnum.strength]: 10,
+      [StatEnum.strength]: 8,
       [StatEnum.dexterity]: 15,
       [StatEnum.constitution]: 14,
       [StatEnum.intelligence]: 19,

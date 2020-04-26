@@ -50,6 +50,25 @@ export enum RaceEnum {
   tiefling = 'Tiefling',
 }
 
+enum SubRaceEnum {
+  any = 'any',
+  hill = 'Hill',
+  mountain = 'Mountain',
+  forest = 'Forest',
+  rock = 'Rock',
+  stout = 'Stout',
+  high = 'High',
+  wood = 'Wood',
+  lightfoot = 'Lightfoot',
+}
+
+export const SubRaceMap: Partial<Record<RaceEnum, SubRaceEnum[]>> = {
+  [RaceEnum.dwarf]: [SubRaceEnum.hill, SubRaceEnum.mountain],
+  [RaceEnum.elf]: [SubRaceEnum.high, SubRaceEnum.wood],
+  [RaceEnum.gnome]: [SubRaceEnum.forest, SubRaceEnum.rock],
+  [RaceEnum.halfling]: [SubRaceEnum.lightfoot, SubRaceEnum.stout],
+};
+
 export enum SkillEnum {
   acrobatics = 'Acrobatics',
   animalHandling = 'Animal Handling',
@@ -104,6 +123,15 @@ const skillMap: Record<SkillEnum, StatEnum> = {
 export type StatsInterface = Record<StatEnum, number>;
 export type SkillsInterface = Record<SkillEnum, boolean>;
 type SkillsList = SkillEnum[];
+
+interface ReasonedModifier {
+  amount: number;
+  reason: string;
+}
+
+// interface ReasonedModifier extends ReasonedStatModifier {
+//   stat: StatEnum;
+// }
 
 function baseStatModifer(stat: number): number {
   const delta = stat - 10;
@@ -221,13 +249,6 @@ export class Adventurer {
 
     this.stats = params.stats;
 
-    // this.strength = params.stats[StatEnum.strength];
-    // this.dexterity = params.stats[StatEnum.dexterity];
-    // this.constitution = params.stats[StatEnum.constitution];
-    // this.intelligence = params.stats[StatEnum.intelligence];
-    // this.wisdom = params.stats[StatEnum.wisdom];
-    // this.charisma = params.stats[StatEnum.charisma];
-
     this.skills = {
       [SkillEnum.acrobatics]: params.skills.includes(SkillEnum.acrobatics),
       [SkillEnum.animalHandling]: params.skills.includes(
@@ -261,7 +282,18 @@ export class Adventurer {
   }
 
   get levelExplanation(): string {
-    return `what??`;
+    if (this.level === 20) {
+      return `You maxed out at level 20 with ${
+        xpLevelValues[xpLevelValues.length - 1]
+      }xp!`;
+    }
+
+    const nextXp = xpLevelValues[this.level];
+    const delta = nextXp - this.xp;
+
+    return `You will get to level ${
+      this.level + 1
+    } when you have ${nextXp}xp.\nOnly ${delta} more to go!`;
   }
 
   get level(): number {
@@ -277,32 +309,6 @@ export class Adventurer {
     return bonus + 1;
   }
 
-  // get strengthModifier(): number {
-  //   return statModifer(this.strength);
-  // }
-
-  // get dexterityModifier(): number {
-  //   return statModifer(this.dexterity);
-  // }
-
-  // get constitutionModifier(): number {
-  //   return (
-  //     statModifer(this.constitution) + (this.race === RaceEnum.gnome ? 1 : 0)
-  //   );
-  // }
-
-  // get intelligenceModifier(): number {
-  //   return statModifer(this.intelligence);
-  // }
-
-  // get wisdomModifier(): number {
-  //   return statModifer(this.wisdom);
-  // }
-
-  // get charismaModifier(): number {
-  //   return statModifer(this.charisma);
-  // }
-
   getStat(stat: StatEnum): number {
     return this.stats[stat];
   }
@@ -311,11 +317,36 @@ export class Adventurer {
     this.stats[stat] = val;
   }
 
+  statExplanation(stat: StatEnum): ReasonedModifier[] {
+    // base
+    const base: ReasonedModifier[] = [
+      {
+        reason: 'Stat',
+        amount: baseStatModifer(this.getStat(stat)),
+      },
+    ];
+
+    // race
+    const race: ReasonedModifier[] = [
+      {
+        reason: this.race,
+        amount: raceStatModifier(this.race, stat),
+      },
+    ];
+
+    const clss: ReasonedModifier[] = [
+      {
+        reason: this.class,
+        amount: classStatModifier(this.class, stat),
+      },
+    ];
+
+    // send back the list, filtering out "zero" amounts
+    return [].concat(base, race, clss).filter((x) => x.amount !== 0);
+  }
+
   statModifier(stat: StatEnum): number {
-    const base = baseStatModifer(this.stats[stat]);
-    const race = raceStatModifier(this.race, stat);
-    const clss = classStatModifier(this.class, stat);
-    return base + race + clss;
+    return this.statExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 
   hasSkill(skill: SkillEnum): boolean {
@@ -326,15 +357,40 @@ export class Adventurer {
     this.skills[skill] = has;
   }
 
-  modifiedSkill(skill: SkillEnum): number {
-    const stat = skillMap[skill];
-    return (
-      this.statModifier(stat) +
-      (this.hasSkill(skill) ? this.proficiencyBonus : 0)
-    );
-  }
+  // modifiedSkill(skill: SkillEnum): number {
+  //   const stat = skillMap[skill];
+  //   return (
+  //     this.statModifier(stat) +
+  //     (this.hasSkill(skill) ? this.proficiencyBonus : 0)
+  //   );
+  // }
 
   skillStat(skill: SkillEnum): StatEnum {
     return skillMap[skill];
+  }
+
+  skillExplanation(skill: SkillEnum): ReasonedModifier[] {
+    // stat
+    const base: ReasonedModifier[] = [
+      {
+        reason: this.skillStat(skill),
+        amount: this.statModifier(this.skillStat(skill)),
+      },
+    ];
+
+    // proficiency
+    const proficiency: ReasonedModifier[] = [
+      {
+        reason: 'Proficiency',
+        amount: this.hasSkill(skill) ? this.proficiencyBonus : 0,
+      },
+    ];
+
+    // send back the list, filtering out "zero" amounts
+    return [].concat(base, proficiency).filter((x) => x.amount !== 0);
+  }
+
+  skillModifier(skill: SkillEnum): number {
+    return this.skillExplanation(skill).reduce((a, b) => a + b.amount, 0);
   }
 }
