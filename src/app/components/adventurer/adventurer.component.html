@@ -98,7 +98,7 @@
         <div class="stat-modifier">
           {{ adventurer.statModifier(stat) | modifier }}
 
-          <ul class="explanation">
+          <ul class="explanation tooltip">
             <li *ngFor="let part of adventurer.statModifierExplanation(stat)" class="explanation__part">
               <span class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
               <span class="explanation__part__reason">{{ part.reason }}</span>
@@ -108,7 +108,7 @@
         <div class="stat-base">
           {{ adventurer.getStat(stat) }}
 
-          <ul class="explanation">
+          <ul class="explanation tooltip">
             <li *ngFor="let part of adventurer.statExplanation(stat)" class="explanation__part">
               <span class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
               <span class="explanation__part__reason">{{ part.reason }}</span>
@@ -133,7 +133,7 @@
             <span class="skill--modifier">{{ adventurer.skillModifier(skill) | modifier }}</span>
             <span class="skill--label">{{ skill }}</span>
             <span class="skill--stat">({{ adventurer.skillStat(skill).substring(0,3) }})</span>
-            <ul class="explanation">
+            <ul class="explanation tooltip">
               <li *ngFor="let part of adventurer.skillExplanation(skill)" class="explanation__part">
                 <span
                   class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>

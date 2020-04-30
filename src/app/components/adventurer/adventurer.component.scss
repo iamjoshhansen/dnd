@@ -211,7 +211,7 @@ select {
         background: #ffffff33;
 
         .explanation {
-          display: block;
+          display: table;
         }
       }
     }
@@ -229,19 +229,6 @@ select {
           display: block;
         }
       }
-    }
-
-    .explanation {
-      display: none;
-      position: absolute;
-      z-index: 2;
-      left: 100%;
-      top: 50%;
-      margin-left: 6px;
-      transform: translateY(-50%);
-      background: #000000ee;
-      border: solid 1px #333;
-      padding: 0.5em;
     }
   }
 }
@@ -273,24 +260,11 @@ select {
       margin-left: 1em;
     }
 
-    .explanation {
-      display: none;
-      position: absolute;
-      z-index: 2;
-      left: 100%;
-      top: 50%;
-      margin-left: 6px;
-      transform: translateY(-50%);
-      background: #000000ee;
-      border: solid 1px #333;
-      padding: 0.5em;
-    }
-
     &:hover {
       background: #ffffff33;
 
       .explanation {
-        display: block;
+        display: table;
       }
     }
   }
@@ -301,6 +275,19 @@ select {
   display: table;
   white-space: nowrap;
   position: relative;
+
+  &.tooltip {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    left: 100%;
+    top: 50%;
+    margin-left: 6px;
+    transform: translateY(-50%);
+    background: #000000ee;
+    border: solid 1px #333;
+    padding: 0.5em;
+  }
 
   &::after {
     $size: 5px;
