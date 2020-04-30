@@ -127,6 +127,7 @@ type SkillsList = SkillEnum[];
 interface ReasonedModifier {
   amount: number;
   reason: string;
+  isBase?: boolean;
 }
 
 // interface ReasonedModifier extends ReasonedStatModifier {
@@ -309,20 +310,25 @@ export class Adventurer {
     return bonus + 1;
   }
 
-  getStat(stat: StatEnum): number {
+  getBaseStat(stat: StatEnum): number {
     return this.stats[stat];
   }
 
-  setStat(stat: StatEnum, val: number) {
+  setBaseStat(stat: StatEnum, val: number) {
     this.stats[stat] = val;
+  }
+
+  getStat(stat: StatEnum): number {
+    return this.statExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 
   statExplanation(stat: StatEnum): ReasonedModifier[] {
     // base
     const base: ReasonedModifier[] = [
       {
-        reason: 'Stat',
-        amount: baseStatModifer(this.getStat(stat)),
+        reason: 'Base',
+        amount: this.getBaseStat(stat),
+        isBase: true,
       },
     ];
 
@@ -346,7 +352,16 @@ export class Adventurer {
   }
 
   statModifier(stat: StatEnum): number {
-    return this.statExplanation(stat).reduce((a, b) => a + b.amount, 0);
+    return this.statModifierExplanation(stat).reduce((a, b) => a + b.amount, 0);
+  }
+
+  statModifierExplanation(stat: StatEnum): ReasonedModifier[] {
+    return [
+      {
+        reason: `(10 - ${this.getStat(stat)}) / 2 rounded down`,
+        amount: baseStatModifer(this.getStat(stat)),
+      },
+    ];
   }
 
   hasSkill(skill: SkillEnum): boolean {
