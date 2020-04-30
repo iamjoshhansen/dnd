@@ -193,7 +193,6 @@ select {
     display: grid;
     grid-template-rows: min-content 1fr min-content;
     align-items: center;
-    position: relative;
 
     .stat-label {
       padding: 0.25em;
@@ -203,12 +202,30 @@ select {
     .stat-modifier {
       font-size: 1.5em;
       padding: 0.5em 0;
+      position: relative;
+
+      &:hover {
+        background: #ffffff33;
+
+        .explanation {
+          display: block;
+        }
+      }
     }
 
     .stat-base {
       font-size: 1em;
       padding: 0.25em;
       border-bottom: none;
+      position: relative;
+
+      &:hover {
+        background: #ffffff33;
+
+        .explanation {
+          display: block;
+        }
+      }
     }
 
     .explanation {
@@ -217,18 +234,11 @@ select {
       z-index: 2;
       left: 100%;
       top: 50%;
+      margin-left: 6px;
       transform: translateY(-50%);
       background: #000000ee;
       border: solid 1px #333;
       padding: 0.5em;
-    }
-
-    &:hover {
-      background: #ffffff33;
-
-      .explanation {
-        display: block;
-      }
     }
   }
 }
@@ -267,6 +277,7 @@ select {
       z-index: 2;
       left: 100%;
       top: 50%;
+      margin-left: 6px;
       transform: translateY(-50%);
       background: #000000ee;
       border: solid 1px #333;
@@ -284,7 +295,24 @@ select {
 }
 
 .explanation {
+  font-size: 0.75rem;
   display: table;
+  white-space: nowrap;
+  position: relative;
+
+  &::after {
+    $size: 5px;
+    content: " ";
+    width: 0;
+    height: 0;
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid #333;
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    margin: -$size 1px 0 0;
+  }
 
   &__part {
     display: table-row;
