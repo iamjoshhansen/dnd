@@ -413,7 +413,7 @@ select {
   border-radius: 5px;
   padding-top: 0.5em;
   display: grid;
-  gap: 0.5em;
+  gap: 0.25em;
   grid-template-rows: minmax(1em, 1fr) min-content;
   grid-template-areas:
     '.'

@@ -41,7 +41,6 @@ h3,
 h4,
 h5,
 h6 {
-  // font-family: 'The Girl Next Door', cursive;
   font-family: "Shadows Into Light", cursive;
   margin: 0 0 0.5em;
   padding: 0;
@@ -96,10 +95,11 @@ input[type=checkbox] {
     background: var(--background);
     border: solid 0.1em var(--text-color);
     box-sizing: border-box;
+    margin-top: -3px;
   }
 
   &:checked::after {
-    background: var(--dim-color);
+    background: var(--checkbox-selected);
   }
 
 
