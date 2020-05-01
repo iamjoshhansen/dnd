@@ -20,11 +20,6 @@ li {
   list-style-type: none;
 }
 
-body {
-  background: #101010;
-  color: #eee;
-}
-
 h1,
 h2 {
   font-size: 2em;
@@ -54,12 +49,13 @@ h6 {
 }
 
 a {
-  color: #090;
+  color: var(--link-color);
   text-decoration: none;
 
   &:focus {
-    color: #9f9;
     outline: none;
+    color: var(--link-color);
+    border-bottom: solid 0.1em var(--link-focus-outline);
   }
 }
 
@@ -82,4 +78,29 @@ dl {
     grid-column: 2;
     margin: 0;
   }
+}
+
+input[type=checkbox] {
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  visibility: hidden;
+
+  &::after {
+    visibility: visible;
+    display: inline-block;
+    content: '';
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background: var(--background);
+    border: solid 0.1em var(--text-color);
+    box-sizing: border-box;
+  }
+
+  &:checked::after {
+    background: var(--dim-color);
+  }
+
+
 }
