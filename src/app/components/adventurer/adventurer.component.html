@@ -27,7 +27,15 @@
           <option val="warlock">Warlock</option>
           <option val="wizard">Wizard</option>
         </select>
-        <span class="input-2" [title]="adventurer.levelExplanation">{{ adventurer.level }}</span>
+        <span class="input-2">
+          <span class="explanation-trigger">
+            {{ adventurer.level }}
+
+            <div class="explanation tooltip">
+              {{ adventurer.levelExplanation }}
+            </div>
+          </span>
+        </span>
       </label>
     </div>
 

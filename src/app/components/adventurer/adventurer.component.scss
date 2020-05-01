@@ -76,6 +76,14 @@
   }
 }
 
+.explanation-trigger {
+  position: relative;
+
+  &:hover .explanation {
+    display: table;
+  }
+}
+
 .input {
   background: none;
   border: none;
