@@ -27,8 +27,7 @@
           <option val="warlock">Warlock</option>
           <option val="wizard">Wizard</option>
         </select>
-        <input class="input input-2 number-input" type="number" [value]="adventurer.level"
-          [title]="adventurer.levelExplanation" readonly />
+        <span class="input-2" [title]="adventurer.levelExplanation">{{ adventurer.level }}</span>
       </label>
     </div>
 
@@ -48,7 +47,7 @@
 
     <div class="input-set">
       <label class="input-label">
-        <span class="text-label">Race '{{ adventurer.race }}'</span>
+        <span class="text-label">Race</span>
         <select class="input text-input" [(ngModel)]="adventurer.race">
           <option val="">...</option>
           <option val="dragonborn">{{ RaceEnum.dragonborn }}</option>
@@ -65,18 +64,19 @@
     </div>
 
     <div class="input-set">
-      <label class="input-label two-part">
+      <label class="input-label">
         <span class="text-label">Alignment</span>
-        <select class="input text-input">
+        <select class="input text-input" [(ngModel)]="adventurer.alignment">
           <option val="">...</option>
-          <option>Lawfull</option>
-          <option>Chaotic</option>
-        </select>
-        <select class="input input-2 text-input">
-          <option val="">...</option>
-          <option>Good</option>
-          <option>Nuetral</option>
-          <option>Evil</option>
+          <option [attr.val]="AlignmentEnum.lawfullGood">{{ AlignmentEnum.lawfullGood }}</option>
+          <option [attr.val]="AlignmentEnum.nuetralGood">{{ AlignmentEnum.nuetralGood }}</option>
+          <option [attr.val]="AlignmentEnum.chaoticGood">{{ AlignmentEnum.chaoticGood }}</option>
+          <option [attr.val]="AlignmentEnum.lawfulNeutral">{{ AlignmentEnum.lawfulNeutral }}</option>
+          <option [attr.val]="AlignmentEnum.nuetral">{{ AlignmentEnum.nuetral }}</option>
+          <option [attr.val]="AlignmentEnum.chaoticNeutral">{{ AlignmentEnum.chaoticNeutral }}</option>
+          <option [attr.val]="AlignmentEnum.lawfullEvil">{{ AlignmentEnum.lawfullEvil }}</option>
+          <option [attr.val]="AlignmentEnum.nuetralEvil">{{ AlignmentEnum.nuetralEvil }}</option>
+          <option [attr.val]="AlignmentEnum.chaoticEvil">{{ AlignmentEnum.chaoticEvil }}</option>
         </select>
       </label>
     </div>

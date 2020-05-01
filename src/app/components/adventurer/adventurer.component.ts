@@ -5,6 +5,7 @@ import {
   RaceEnum,
   StatEnum,
   SkillEnum,
+  AlignmentEnum,
 } from './adventurer';
 
 @Component({
@@ -14,7 +15,8 @@ import {
 })
 export class AdventurerComponent implements OnInit {
   @Input() adventurer = new Adventurer({
-    characterName: 'Foobar',
+    characterName: 'Kelryn',
+    alignment: AlignmentEnum.nuetralGood,
     playerName: 'Josh Hansen',
     xp: 0,
     class: ClassEnum.wizard,
@@ -32,6 +34,7 @@ export class AdventurerComponent implements OnInit {
 
   StatEnum = StatEnum;
   RaceEnum = RaceEnum;
+  AlignmentEnum = AlignmentEnum;
 
   stats: StatEnum[] = [
     StatEnum.strength,

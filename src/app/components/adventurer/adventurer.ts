@@ -50,7 +50,7 @@ export enum RaceEnum {
   tiefling = 'Tiefling',
 }
 
-enum SubRaceEnum {
+export enum SubRaceEnum {
   any = 'any',
   hill = 'Hill',
   mountain = 'Mountain',
@@ -60,6 +60,18 @@ enum SubRaceEnum {
   high = 'High',
   wood = 'Wood',
   lightfoot = 'Lightfoot',
+}
+
+export enum AlignmentEnum {
+  lawfullGood = 'Lawfull good',
+  nuetralGood = 'Nuetral good',
+  chaoticGood = 'Chaotic good',
+  lawfulNeutral = 'Lawful neutral',
+  nuetral = 'Nuetral',
+  chaoticNeutral = 'Chaotic neutral',
+  lawfullEvil = 'Lawfull evil',
+  nuetralEvil = 'Nuetral evil',
+  chaoticEvil = 'Chaotic evil',
 }
 
 export const SubRaceMap: Partial<Record<RaceEnum, SubRaceEnum[]>> = {
@@ -99,7 +111,7 @@ export enum StatEnum {
   charisma = 'Charisma',
 }
 
-const skillMap: Record<SkillEnum, StatEnum> = {
+const skillStatMap: Record<SkillEnum, StatEnum> = {
   [SkillEnum.acrobatics]: StatEnum.dexterity,
   [SkillEnum.animalHandling]: StatEnum.wisdom,
   [SkillEnum.arcana]: StatEnum.intelligence,
@@ -128,16 +140,6 @@ interface ReasonedModifier {
   amount: number;
   reason: string;
   isBase?: boolean;
-}
-
-// interface ReasonedModifier extends ReasonedStatModifier {
-//   stat: StatEnum;
-// }
-
-function baseStatModifer(stat: number): number {
-  const delta = stat - 10;
-  const isNeg = delta < 0;
-  return Math.floor(Math.abs(delta) / 2) * (isNeg ? -1 : 1);
 }
 
 const raceStatModifiers: Record<RaceEnum, Partial<Record<StatEnum, number>>> = {
@@ -186,6 +188,7 @@ export class Adventurer {
   public class: ClassEnum;
   public race: RaceEnum;
   public xp: number;
+  public alignment?: AlignmentEnum;
 
   private stats: StatsInterface;
   private skills: SkillsInterface;
@@ -236,6 +239,7 @@ export class Adventurer {
   constructor(params: {
     characterName?: string;
     playerName?: string;
+    alignment?: AlignmentEnum;
     xp?: number;
     class: ClassEnum;
     race: RaceEnum;
@@ -247,6 +251,7 @@ export class Adventurer {
     this.class = params.class;
     this.race = params.race;
     this.xp = params.xp || 0;
+    this.alignment = params.alignment;
 
     this.stats = params.stats;
 
@@ -356,10 +361,14 @@ export class Adventurer {
   }
 
   statModifierExplanation(stat: StatEnum): ReasonedModifier[] {
+    const delta = this.getStat(stat) - 10;
+    const isNeg = delta < 0;
+    const amount = Math.floor(Math.abs(delta) / 2) * (isNeg ? -1 : 1);
+
     return [
       {
-        reason: `(10 - ${this.getStat(stat)}) / 2 rounded down`,
-        amount: baseStatModifer(this.getStat(stat)),
+        reason: `(10 - ${this.getStat(stat)}) / 2 ... rounded down`,
+        amount,
       },
     ];
   }
@@ -381,7 +390,7 @@ export class Adventurer {
   // }
 
   skillStat(skill: SkillEnum): StatEnum {
-    return skillMap[skill];
+    return skillStatMap[skill];
   }
 
   skillExplanation(skill: SkillEnum): ReasonedModifier[] {
