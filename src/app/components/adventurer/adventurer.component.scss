@@ -235,8 +235,8 @@ select {
   }
 }
 
-.skill-list {
-  .skill {
+.checklist {
+  .check {
     position: relative;
     padding: 0.25em;
     // margin: 0 -0.25em;
@@ -325,5 +325,25 @@ select {
       padding-left: 1ch;
       text-align: left;
     }
+  }
+}
+
+.labeled-section {
+  border: solid 1px var(--faint-border);
+  border-radius: 1em;
+  padding-top: 0.5em;
+  display: grid;
+  gap: 0.5em;
+  grid-template-rows: 1fr min-content;
+  grid-template-areas:
+    '.'
+    'label';
+
+  .section-label {
+    grid-area: label;
+    text-align: center;
+    font-family: "Share Tech Mono", monospace;
+    text-transform: uppercase;
+    font-size: 0.75em;
   }
 }

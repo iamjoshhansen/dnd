@@ -19,7 +19,7 @@ export class AdventurerComponent implements OnInit {
     alignment: AlignmentEnum.nuetralGood,
     playerName: 'Josh Hansen',
     xp: 0,
-    class: ClassEnum.wizard,
+    clss: ClassEnum.wizard,
     race: RaceEnum.gnome,
     stats: {
       [StatEnum.strength]: 8,
@@ -30,6 +30,7 @@ export class AdventurerComponent implements OnInit {
       [StatEnum.charisma]: 13,
     },
     skills: [SkillEnum.investigation, SkillEnum.arcana],
+    savingThrows: [StatEnum.strength],
   });
 
   StatEnum = StatEnum;

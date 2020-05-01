@@ -12,7 +12,7 @@
     <div class="input-set">
       <label class="input-label two-part">
         <span class="text-label">Class &amp; Level</span>
-        <select class="input text-input" [(ngModel)]="adventurer.class">
+        <select class="input text-input" [(ngModel)]="adventurer.clss">
           <option val="">...</option>
           <option val="barbarian">Barbarian</option>
           <option val="bard">Bard</option>
@@ -122,17 +122,38 @@
       +{{ adventurer.proficiencyBonus }}
       Proficiency Bonus
     </div>
-    <div class="saving">saving</div>
-    <div class="skills">
 
-      <ul class="skill-list">
-        <li class="skill" *ngFor="let skill of skills">
+    <div class="saving labeled-section">
+      <h4 class="section-label">Saving Throws</h4>
+      <ul class="checklist">
+        <li class="check" *ngFor="let stat of stats">
+          <label>
+            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSavingThrow(stat)"
+              (change)="adventurer.setSavingThrow(stat, $event.target.checked)" />
+            <span class="check--modifier">{{ adventurer.savingThrowModifier(stat) | modifier }}</span>
+            <span class="check--label">{{ stat }}</span>
+            <ul class="explanation tooltip">
+              <li *ngFor="let part of adventurer.savingThrowExplanation(stat)" class="explanation__part">
+                <span
+                  class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
+                <span class="explanation__part__reason">{{ part.reason }}</span>
+              </li>
+            </ul>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="skills labeled-section">
+      <h4 class="section-label">Skills</h4>
+      <ul class="checklist">
+        <li class="check" *ngFor="let skill of skills">
           <label>
             <input class="checkbox" type="checkbox" [checked]="adventurer.hasSkill(skill)"
               (change)="adventurer.setSkill(skill, $event.target.checked)" />
-            <span class="skill--modifier">{{ adventurer.skillModifier(skill) | modifier }}</span>
-            <span class="skill--label">{{ skill }}</span>
-            <span class="skill--stat">({{ adventurer.skillStat(skill).substring(0,3) }})</span>
+            <span class="check--modifier">{{ adventurer.skillModifier(skill) | modifier }}</span>
+            <span class="check--label">{{ skill }}</span>
+            <span class="check--stat">({{ adventurer.skillStat(skill).substring(0,3) }})</span>
             <ul class="explanation tooltip">
               <li *ngFor="let part of adventurer.skillExplanation(skill)" class="explanation__part">
                 <span
@@ -143,7 +164,6 @@
           </label>
         </li>
       </ul>
-
     </div>
   </section>
   <section class="passive">passive</section>

@@ -135,6 +135,7 @@ const skillStatMap: Record<SkillEnum, StatEnum> = {
 export type StatsInterface = Record<StatEnum, number>;
 export type SkillsInterface = Record<SkillEnum, boolean>;
 type SkillsList = SkillEnum[];
+type SavingThrowList = StatEnum[];
 
 interface ReasonedModifier {
   amount: number;
@@ -182,104 +183,120 @@ function classStatModifier(clss: ClassEnum, stat: StatEnum) {
   return classStatModifiers[clss][stat] || 0;
 }
 
+export interface AdventurerData {
+  characterName?: string;
+  playerName?: string;
+  alignment?: AlignmentEnum;
+  xp?: number;
+  clss?: ClassEnum;
+  race?: RaceEnum;
+  stats?: StatsInterface;
+  skills?: SkillsList;
+  savingThrows?: SavingThrowList;
+}
+
 export class Adventurer {
   public characterName: string;
   public playerName: string;
-  public class: ClassEnum;
+  public clss: ClassEnum;
   public race: RaceEnum;
   public xp: number;
   public alignment?: AlignmentEnum;
 
   private stats: StatsInterface;
   private skills: SkillsInterface;
+  private savingThrows: Partial<Record<StatEnum, boolean>> = {};
 
   // Stats
-  get strength() {
-    return this.stats[StatEnum.strength];
-  }
-  set strength(val: number) {
-    this.stats[StatEnum.strength] = val;
-  }
+  // get strength() {
+  //   return this.stats[StatEnum.strength];
+  // }
+  // set strength(val: number) {
+  //   this.stats[StatEnum.strength] = val;
+  // }
 
-  get dexterity() {
-    return this.stats[StatEnum.dexterity];
-  }
-  set dexterity(val: number) {
-    this.stats[StatEnum.dexterity] = val;
-  }
+  // get dexterity() {
+  //   return this.stats[StatEnum.dexterity];
+  // }
+  // set dexterity(val: number) {
+  //   this.stats[StatEnum.dexterity] = val;
+  // }
 
-  get constitution() {
-    return this.stats[StatEnum.constitution];
-  }
-  set constitution(val: number) {
-    this.stats[StatEnum.constitution] = val;
-  }
+  // get constitution() {
+  //   return this.stats[StatEnum.constitution];
+  // }
+  // set constitution(val: number) {
+  //   this.stats[StatEnum.constitution] = val;
+  // }
 
-  get intelligence() {
-    return this.stats[StatEnum.intelligence];
-  }
-  set intelligence(val: number) {
-    this.stats[StatEnum.intelligence] = val;
-  }
+  // get intelligence() {
+  //   return this.stats[StatEnum.intelligence];
+  // }
+  // set intelligence(val: number) {
+  //   this.stats[StatEnum.intelligence] = val;
+  // }
 
-  get wisdom() {
-    return this.stats[StatEnum.wisdom];
-  }
-  set wisdom(val: number) {
-    this.stats[StatEnum.wisdom] = val;
-  }
+  // get wisdom() {
+  //   return this.stats[StatEnum.wisdom];
+  // }
+  // set wisdom(val: number) {
+  //   this.stats[StatEnum.wisdom] = val;
+  // }
 
-  get charisma() {
-    return this.stats[StatEnum.charisma];
-  }
-  set charisma(val: number) {
-    this.stats[StatEnum.charisma] = val;
-  }
+  // get charisma() {
+  //   return this.stats[StatEnum.charisma];
+  // }
+  // set charisma(val: number) {
+  //   this.stats[StatEnum.charisma] = val;
+  // }
 
-  constructor(params: {
-    characterName?: string;
-    playerName?: string;
-    alignment?: AlignmentEnum;
-    xp?: number;
-    class: ClassEnum;
-    race: RaceEnum;
-    stats: StatsInterface;
-    skills: SkillsList;
-  }) {
-    this.characterName = params.characterName || '';
-    this.playerName = params.playerName || '';
-    this.class = params.class;
-    this.race = params.race;
-    this.xp = params.xp || 0;
-    this.alignment = params.alignment;
+  constructor({
+    clss,
+    race,
+    alignment,
+    stats,
+    xp = 0,
+    characterName = '',
+    playerName = '',
+    skills = [],
+    savingThrows = [],
+  }: AdventurerData) {
+    this.characterName = characterName;
+    this.playerName = playerName;
+    this.clss = clss;
+    this.race = race;
+    this.xp = xp;
+    this.alignment = alignment;
+    this.stats = stats;
 
-    this.stats = params.stats;
+    this.savingThrows = {
+      [StatEnum.strength]: savingThrows.includes(StatEnum.strength),
+      [StatEnum.dexterity]: savingThrows.includes(StatEnum.dexterity),
+      [StatEnum.constitution]: savingThrows.includes(StatEnum.constitution),
+      [StatEnum.intelligence]: savingThrows.includes(StatEnum.intelligence),
+      [StatEnum.wisdom]: savingThrows.includes(StatEnum.wisdom),
+      [StatEnum.charisma]: savingThrows.includes(StatEnum.charisma),
+    };
 
     this.skills = {
-      [SkillEnum.acrobatics]: params.skills.includes(SkillEnum.acrobatics),
-      [SkillEnum.animalHandling]: params.skills.includes(
-        SkillEnum.animalHandling
-      ),
-      [SkillEnum.arcana]: params.skills.includes(SkillEnum.arcana),
-      [SkillEnum.athltetics]: params.skills.includes(SkillEnum.athltetics),
-      [SkillEnum.deception]: params.skills.includes(SkillEnum.deception),
-      [SkillEnum.history]: params.skills.includes(SkillEnum.history),
-      [SkillEnum.insight]: params.skills.includes(SkillEnum.insight),
-      [SkillEnum.intimidation]: params.skills.includes(SkillEnum.intimidation),
-      [SkillEnum.investigation]: params.skills.includes(
-        SkillEnum.investigation
-      ),
-      [SkillEnum.medicine]: params.skills.includes(SkillEnum.medicine),
-      [SkillEnum.nature]: params.skills.includes(SkillEnum.nature),
-      [SkillEnum.perception]: params.skills.includes(SkillEnum.perception),
-      [SkillEnum.performance]: params.skills.includes(SkillEnum.performance),
-      [SkillEnum.persuasion]: params.skills.includes(SkillEnum.persuasion),
-      [SkillEnum.religion]: params.skills.includes(SkillEnum.religion),
-      [SkillEnum.sleightOfHand]: params.skills.includes(
-        SkillEnum.sleightOfHand
-      ),
-      [SkillEnum.stealth]: params.skills.includes(SkillEnum.stealth),
-      [SkillEnum.suvival]: params.skills.includes(SkillEnum.suvival),
+      [SkillEnum.acrobatics]: skills.includes(SkillEnum.acrobatics),
+      [SkillEnum.animalHandling]: skills.includes(SkillEnum.animalHandling),
+      [SkillEnum.arcana]: skills.includes(SkillEnum.arcana),
+      [SkillEnum.athltetics]: skills.includes(SkillEnum.athltetics),
+      [SkillEnum.deception]: skills.includes(SkillEnum.deception),
+      [SkillEnum.history]: skills.includes(SkillEnum.history),
+      [SkillEnum.insight]: skills.includes(SkillEnum.insight),
+      [SkillEnum.intimidation]: skills.includes(SkillEnum.intimidation),
+      [SkillEnum.investigation]: skills.includes(SkillEnum.investigation),
+      [SkillEnum.medicine]: skills.includes(SkillEnum.medicine),
+      [SkillEnum.nature]: skills.includes(SkillEnum.nature),
+      [SkillEnum.perception]: skills.includes(SkillEnum.perception),
+      [SkillEnum.performance]: skills.includes(SkillEnum.performance),
+      [SkillEnum.persuasion]: skills.includes(SkillEnum.persuasion),
+      [SkillEnum.religion]: skills.includes(SkillEnum.religion),
+      [SkillEnum.sleightOfHand]: skills.includes(SkillEnum.sleightOfHand),
+      [SkillEnum.stealth]: skills.includes(SkillEnum.stealth),
+      [SkillEnum.suvival]: skills.includes(SkillEnum.suvival),
     };
   }
 
@@ -347,8 +364,8 @@ export class Adventurer {
 
     const clss: ReasonedModifier[] = [
       {
-        reason: this.class,
-        amount: classStatModifier(this.class, stat),
+        reason: this.clss,
+        amount: classStatModifier(this.clss, stat),
       },
     ];
 
@@ -416,5 +433,41 @@ export class Adventurer {
 
   skillModifier(skill: SkillEnum): number {
     return this.skillExplanation(skill).reduce((a, b) => a + b.amount, 0);
+  }
+
+  // Saving Throws
+  hasSavingThrow(stat: StatEnum): boolean {
+    return !!this.savingThrows[stat];
+  }
+
+  setSavingThrow(stat: StatEnum, val: boolean): this {
+    if (val) {
+      this.savingThrows[stat] = true;
+    } else {
+      delete this.savingThrows[stat];
+    }
+    return this;
+  }
+
+  savingThrowExplanation(stat: StatEnum): ReasonedModifier[] {
+    const reasons: ReasonedModifier[] = [
+      {
+        reason: stat,
+        amount: this.statModifier(stat),
+      },
+    ];
+
+    if (this.hasSavingThrow(stat)) {
+      reasons.push({
+        reason: 'Proficiency',
+        amount: this.proficiencyBonus,
+      });
+    }
+
+    return reasons;
+  }
+
+  savingThrowModifier(stat: StatEnum): number {
+    return this.savingThrowExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 }
