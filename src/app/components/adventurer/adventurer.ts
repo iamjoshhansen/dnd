@@ -395,7 +395,7 @@ export class Adventurer {
 
     // base
     reasons.push({
-      reason: 'Base',
+      reason: 'Die roll',
       amount: this.getBaseStat(stat),
       isBase: true,
     });
