@@ -10,6 +10,7 @@ select,
 button,
 textarea {
   font-family: "Share Tech Mono", monospace;
+  color: var(--text-color);
 }
 
 ol,
@@ -101,6 +102,4 @@ input[type=checkbox] {
   &:checked::after {
     background: var(--checkbox-selected);
   }
-
-
 }

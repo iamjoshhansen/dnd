@@ -92,9 +92,12 @@
   border-radius: 0;
   box-sizing: border-box;
   font-size: 1em;
-  color: inherit;
   width: 100%;
   text-align: inherit;
+
+  &.light {
+    color: var(--dim-color);
+  }
 
   &[type="number"]::-webkit-inner-spin-button,
   &[type="number"]::-webkit-outer-spin-button {
