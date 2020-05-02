@@ -22,6 +22,7 @@ export class AdventurerComponent implements OnInit {
     xp: 0,
     clss: Clss.wizard,
     race: Race.gnome,
+    subRace: SubRace.deep,
     stats: {
       [Stat.strength]: 8,
       [Stat.dexterity]: 15,
@@ -31,7 +32,7 @@ export class AdventurerComponent implements OnInit {
       [Stat.charisma]: 13,
     },
     skills: [Skill.investigation, Skill.arcana],
-    savingThrows: [Stat.strength],
+    savingThrows: [Stat.intelligence, Stat.wisdom],
   });
 
   Stat = Stat;
