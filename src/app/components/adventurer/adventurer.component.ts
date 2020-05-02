@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
   Adventurer,
-  ClassEnum,
-  RaceEnum,
-  StatEnum,
-  SkillEnum,
-  AlignmentEnum,
+  Clss,
+  Race,
+  SubRace,
+  Stat,
+  Skill,
+  Alignment,
 } from './adventurer';
 
 @Component({
@@ -16,55 +17,56 @@ import {
 export class AdventurerComponent implements OnInit {
   @Input() adventurer = new Adventurer({
     characterName: 'Kelryn',
-    alignment: AlignmentEnum.nuetralGood,
+    alignment: Alignment.nuetralGood,
     playerName: 'Josh Hansen',
     xp: 0,
-    clss: ClassEnum.wizard,
-    race: RaceEnum.gnome,
+    clss: Clss.wizard,
+    race: Race.gnome,
     stats: {
-      [StatEnum.strength]: 8,
-      [StatEnum.dexterity]: 15,
-      [StatEnum.constitution]: 14,
-      [StatEnum.intelligence]: 19,
-      [StatEnum.wisdom]: 13,
-      [StatEnum.charisma]: 13,
+      [Stat.strength]: 8,
+      [Stat.dexterity]: 15,
+      [Stat.constitution]: 14,
+      [Stat.intelligence]: 19,
+      [Stat.wisdom]: 13,
+      [Stat.charisma]: 13,
     },
-    skills: [SkillEnum.investigation, SkillEnum.arcana],
-    savingThrows: [StatEnum.strength],
+    skills: [Skill.investigation, Skill.arcana],
+    savingThrows: [Stat.strength],
   });
 
-  StatEnum = StatEnum;
-  RaceEnum = RaceEnum;
-  AlignmentEnum = AlignmentEnum;
+  Stat = Stat;
+  Race = Race;
+  SubRace = SubRace;
+  Alignment = Alignment;
 
-  stats: StatEnum[] = [
-    StatEnum.strength,
-    StatEnum.dexterity,
-    StatEnum.constitution,
-    StatEnum.intelligence,
-    StatEnum.wisdom,
-    StatEnum.charisma,
+  stats: Stat[] = [
+    Stat.strength,
+    Stat.dexterity,
+    Stat.constitution,
+    Stat.intelligence,
+    Stat.wisdom,
+    Stat.charisma,
   ];
 
-  skills: SkillEnum[] = [
-    SkillEnum.acrobatics,
-    SkillEnum.animalHandling,
-    SkillEnum.arcana,
-    SkillEnum.athltetics,
-    SkillEnum.deception,
-    SkillEnum.history,
-    SkillEnum.insight,
-    SkillEnum.intimidation,
-    SkillEnum.investigation,
-    SkillEnum.medicine,
-    SkillEnum.nature,
-    SkillEnum.perception,
-    SkillEnum.performance,
-    SkillEnum.persuasion,
-    SkillEnum.religion,
-    SkillEnum.sleightOfHand,
-    SkillEnum.stealth,
-    SkillEnum.suvival,
+  skills: Skill[] = [
+    Skill.acrobatics,
+    Skill.animalHandling,
+    Skill.arcana,
+    Skill.athltetics,
+    Skill.deception,
+    Skill.history,
+    Skill.insight,
+    Skill.intimidation,
+    Skill.investigation,
+    Skill.medicine,
+    Skill.nature,
+    Skill.perception,
+    Skill.performance,
+    Skill.persuasion,
+    Skill.religion,
+    Skill.sleightOfHand,
+    Skill.stealth,
+    Skill.suvival,
   ];
 
   constructor() {}

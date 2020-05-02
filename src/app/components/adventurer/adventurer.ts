@@ -23,7 +23,7 @@ const xpLevelValues = [
 
 const profBonusValues = [0, 5, 9, 13, 17];
 
-export enum ClassEnum {
+export enum Clss {
   barbarian = 'Barbarian',
   bard = 'Bard',
   cleric = 'Cleric',
@@ -38,7 +38,7 @@ export enum ClassEnum {
   wizard = 'Wizard',
 }
 
-export enum RaceEnum {
+export enum Race {
   dragonborn = 'Dragonborn',
   dwarf = 'Dwarf',
   elf = 'Elf',
@@ -50,8 +50,8 @@ export enum RaceEnum {
   tiefling = 'Tiefling',
 }
 
-export enum SubRaceEnum {
-  any = 'any',
+export enum SubRace {
+  all = 'all',
   hill = 'Hill',
   mountain = 'Mountain',
   forest = 'Forest',
@@ -60,9 +60,11 @@ export enum SubRaceEnum {
   high = 'High',
   wood = 'Wood',
   lightfoot = 'Lightfoot',
+  deep = 'Deep',
+  dark = 'Dark',
 }
 
-export enum AlignmentEnum {
+export enum Alignment {
   lawfullGood = 'Lawfull good',
   nuetralGood = 'Nuetral good',
   chaoticGood = 'Chaotic good',
@@ -74,14 +76,14 @@ export enum AlignmentEnum {
   chaoticEvil = 'Chaotic evil',
 }
 
-export const SubRaceMap: Partial<Record<RaceEnum, SubRaceEnum[]>> = {
-  [RaceEnum.dwarf]: [SubRaceEnum.hill, SubRaceEnum.mountain],
-  [RaceEnum.elf]: [SubRaceEnum.high, SubRaceEnum.wood],
-  [RaceEnum.gnome]: [SubRaceEnum.forest, SubRaceEnum.rock],
-  [RaceEnum.halfling]: [SubRaceEnum.lightfoot, SubRaceEnum.stout],
+export const subRaceMap: Partial<Record<Race, SubRace[]>> = {
+  [Race.dwarf]: [SubRace.hill, SubRace.mountain],
+  [Race.elf]: [SubRace.high, SubRace.wood, SubRace.dark],
+  [Race.gnome]: [SubRace.forest, SubRace.rock, SubRace.deep],
+  [Race.halfling]: [SubRace.lightfoot, SubRace.stout],
 };
 
-export enum SkillEnum {
+export enum Skill {
   acrobatics = 'Acrobatics',
   animalHandling = 'Animal Handling',
   arcana = 'Arcana',
@@ -102,7 +104,7 @@ export enum SkillEnum {
   suvival = 'Suvival',
 }
 
-export enum StatEnum {
+export enum Stat {
   strength = 'Strength',
   dexterity = 'Dexterity',
   constitution = 'Constitution',
@@ -111,31 +113,31 @@ export enum StatEnum {
   charisma = 'Charisma',
 }
 
-const skillStatMap: Record<SkillEnum, StatEnum> = {
-  [SkillEnum.acrobatics]: StatEnum.dexterity,
-  [SkillEnum.animalHandling]: StatEnum.wisdom,
-  [SkillEnum.arcana]: StatEnum.intelligence,
-  [SkillEnum.athltetics]: StatEnum.strength,
-  [SkillEnum.deception]: StatEnum.charisma,
-  [SkillEnum.history]: StatEnum.intelligence,
-  [SkillEnum.insight]: StatEnum.wisdom,
-  [SkillEnum.intimidation]: StatEnum.charisma,
-  [SkillEnum.investigation]: StatEnum.intelligence,
-  [SkillEnum.medicine]: StatEnum.wisdom,
-  [SkillEnum.nature]: StatEnum.intelligence,
-  [SkillEnum.perception]: StatEnum.wisdom,
-  [SkillEnum.performance]: StatEnum.charisma,
-  [SkillEnum.persuasion]: StatEnum.charisma,
-  [SkillEnum.religion]: StatEnum.intelligence,
-  [SkillEnum.sleightOfHand]: StatEnum.dexterity,
-  [SkillEnum.stealth]: StatEnum.dexterity,
-  [SkillEnum.suvival]: StatEnum.wisdom,
+const skillStatMap: Record<Skill, Stat> = {
+  [Skill.acrobatics]: Stat.dexterity,
+  [Skill.animalHandling]: Stat.wisdom,
+  [Skill.arcana]: Stat.intelligence,
+  [Skill.athltetics]: Stat.strength,
+  [Skill.deception]: Stat.charisma,
+  [Skill.history]: Stat.intelligence,
+  [Skill.insight]: Stat.wisdom,
+  [Skill.intimidation]: Stat.charisma,
+  [Skill.investigation]: Stat.intelligence,
+  [Skill.medicine]: Stat.wisdom,
+  [Skill.nature]: Stat.intelligence,
+  [Skill.perception]: Stat.wisdom,
+  [Skill.performance]: Stat.charisma,
+  [Skill.persuasion]: Stat.charisma,
+  [Skill.religion]: Stat.intelligence,
+  [Skill.sleightOfHand]: Stat.dexterity,
+  [Skill.stealth]: Stat.dexterity,
+  [Skill.suvival]: Stat.wisdom,
 };
 
-export type StatsInterface = Record<StatEnum, number>;
-export type SkillsInterface = Record<SkillEnum, boolean>;
-type SkillsList = SkillEnum[];
-type SavingThrowList = StatEnum[];
+export type StatsInterface = Record<Stat, number>;
+export type SkillsInterface = Record<Skill, boolean>;
+type SkillsList = Skill[];
+type SavingThrowList = Stat[];
 
 interface ReasonedModifier {
   amount: number;
@@ -143,53 +145,129 @@ interface ReasonedModifier {
   isBase?: boolean;
 }
 
-const raceStatModifiers: Record<RaceEnum, Partial<Record<StatEnum, number>>> = {
-  [RaceEnum.dragonborn]: {},
-  [RaceEnum.dwarf]: {},
-  [RaceEnum.elf]: {},
-  [RaceEnum.gnome]: {
-    [StatEnum.constitution]: 1,
-  },
-  [RaceEnum.halfElf]: {},
-  [RaceEnum.halfOrc]: {},
-  [RaceEnum.halfling]: {},
-  [RaceEnum.human]: {},
-  [RaceEnum.tiefling]: {},
-};
-
-function raceStatModifier(race: RaceEnum, stat: StatEnum) {
-  return raceStatModifiers[race][stat] || 0;
-}
-
-const classStatModifiers: Record<
-  ClassEnum,
-  Partial<Record<StatEnum, number>>
+const raceStatModifiers: Record<
+  Race,
+  Partial<Record<SubRace, Partial<Record<Stat, number>>>>
 > = {
-  [ClassEnum.barbarian]: {},
-  [ClassEnum.bard]: {},
-  [ClassEnum.cleric]: {},
-  [ClassEnum.druid]: {},
-  [ClassEnum.fighter]: {},
-  [ClassEnum.monk]: {},
-  [ClassEnum.paladin]: {},
-  [ClassEnum.ranger]: {},
-  [ClassEnum.rogue]: {},
-  [ClassEnum.sorcerer]: {},
-  [ClassEnum.warlock]: {},
-  [ClassEnum.wizard]: {},
+  [Race.dragonborn]: {
+    [SubRace.all]: {
+      [Stat.strength]: 2,
+      [Stat.charisma]: 1,
+    },
+  },
+  [Race.dwarf]: {
+    [SubRace.all]: {
+      [Stat.constitution]: 2,
+    },
+    [SubRace.mountain]: {
+      [Stat.strength]: 2,
+    },
+    [SubRace.hill]: {
+      [Stat.wisdom]: 1,
+    },
+  },
+  [Race.elf]: {
+    [SubRace.all]: {
+      [Stat.dexterity]: 2,
+    },
+    [SubRace.high]: {
+      [Stat.intelligence]: 1,
+    },
+    [SubRace.wood]: {
+      [Stat.wisdom]: 1,
+    },
+    [SubRace.dark]: {
+      [Stat.charisma]: 1,
+    },
+  },
+  [Race.gnome]: {
+    [SubRace.all]: {
+      [Stat.intelligence]: 2,
+    },
+    [SubRace.rock]: {
+      [Stat.constitution]: 1,
+    },
+    [SubRace.forest]: {
+      [Stat.dexterity]: 1,
+    },
+    [SubRace.deep]: {
+      [Stat.strength]: 1,
+    },
+  },
+  [Race.halfElf]: {
+    [SubRace.all]: {
+      [Stat.charisma]: 2,
+      // two other Stat scores of my choice go up by 1
+    },
+  },
+  [Race.halfOrc]: {
+    [SubRace.all]: {
+      [Stat.strength]: 2,
+      [Stat.constitution]: 1,
+    },
+  },
+  [Race.halfling]: {
+    [SubRace.all]: {
+      [Stat.dexterity]: 2,
+    },
+    [SubRace.stout]: {
+      [Stat.constitution]: 1,
+    },
+    [SubRace.lightfoot]: {
+      [Stat.charisma]: 1,
+    },
+  },
+  [Race.human]: {
+    [SubRace.all]: {
+      [Stat.strength]: 1,
+      [Stat.dexterity]: 1,
+      [Stat.constitution]: 1,
+      [Stat.intelligence]: 1,
+      [Stat.wisdom]: 1,
+      [Stat.charisma]: 1,
+    },
+  },
+  [Race.tiefling]: {
+    [SubRace.all]: {
+      [Stat.intelligence]: 1,
+      [Stat.charisma]: 2,
+    },
+  },
 };
 
-function classStatModifier(clss: ClassEnum, stat: StatEnum) {
+console.log(raceStatModifiers);
+
+// function raceStatModifier(race: RaceEnum, stat: StatEnum) {
+//   return raceStatModifiers[race][stat] || 0;
+// }
+
+const classStatModifiers: Record<Clss, Partial<Record<Stat, number>>> = {
+  [Clss.barbarian]: {},
+  [Clss.bard]: {},
+  [Clss.cleric]: {},
+  [Clss.druid]: {},
+  [Clss.fighter]: {},
+  [Clss.monk]: {},
+  [Clss.paladin]: {},
+  [Clss.ranger]: {},
+  [Clss.rogue]: {},
+  [Clss.sorcerer]: {},
+  [Clss.warlock]: {},
+  [Clss.wizard]: {},
+};
+
+function classStatModifier(clss: Clss, stat: Stat) {
   return classStatModifiers[clss][stat] || 0;
 }
 
 export interface AdventurerData {
   characterName?: string;
   playerName?: string;
-  alignment?: AlignmentEnum;
+  alignment?: Alignment;
   xp?: number;
-  clss?: ClassEnum;
-  race?: RaceEnum;
+  clss?: Clss;
+  race?: Race;
+  subRace?: SubRace;
   stats?: StatsInterface;
   skills?: SkillsList;
   savingThrows?: SavingThrowList;
@@ -198,61 +276,20 @@ export interface AdventurerData {
 export class Adventurer {
   public characterName: string;
   public playerName: string;
-  public clss: ClassEnum;
-  public race: RaceEnum;
+  public clss: Clss;
+  public race: Race;
+  public subRace: SubRace;
   public xp: number;
-  public alignment?: AlignmentEnum;
+  public alignment?: Alignment;
 
   private stats: StatsInterface;
   private skills: SkillsInterface;
-  private savingThrows: Partial<Record<StatEnum, boolean>> = {};
-
-  // Stats
-  // get strength() {
-  //   return this.stats[StatEnum.strength];
-  // }
-  // set strength(val: number) {
-  //   this.stats[StatEnum.strength] = val;
-  // }
-
-  // get dexterity() {
-  //   return this.stats[StatEnum.dexterity];
-  // }
-  // set dexterity(val: number) {
-  //   this.stats[StatEnum.dexterity] = val;
-  // }
-
-  // get constitution() {
-  //   return this.stats[StatEnum.constitution];
-  // }
-  // set constitution(val: number) {
-  //   this.stats[StatEnum.constitution] = val;
-  // }
-
-  // get intelligence() {
-  //   return this.stats[StatEnum.intelligence];
-  // }
-  // set intelligence(val: number) {
-  //   this.stats[StatEnum.intelligence] = val;
-  // }
-
-  // get wisdom() {
-  //   return this.stats[StatEnum.wisdom];
-  // }
-  // set wisdom(val: number) {
-  //   this.stats[StatEnum.wisdom] = val;
-  // }
-
-  // get charisma() {
-  //   return this.stats[StatEnum.charisma];
-  // }
-  // set charisma(val: number) {
-  //   this.stats[StatEnum.charisma] = val;
-  // }
+  private savingThrows: Partial<Record<Stat, boolean>> = {};
 
   constructor({
     clss,
     race,
+    subRace = SubRace.all,
     alignment,
     stats,
     xp = 0,
@@ -265,43 +302,52 @@ export class Adventurer {
     this.playerName = playerName;
     this.clss = clss;
     this.race = race;
+    this.subRace = subRace;
     this.xp = xp;
     this.alignment = alignment;
     this.stats = stats;
 
     this.savingThrows = {
-      [StatEnum.strength]: savingThrows.includes(StatEnum.strength),
-      [StatEnum.dexterity]: savingThrows.includes(StatEnum.dexterity),
-      [StatEnum.constitution]: savingThrows.includes(StatEnum.constitution),
-      [StatEnum.intelligence]: savingThrows.includes(StatEnum.intelligence),
-      [StatEnum.wisdom]: savingThrows.includes(StatEnum.wisdom),
-      [StatEnum.charisma]: savingThrows.includes(StatEnum.charisma),
+      [Stat.strength]: savingThrows.includes(Stat.strength),
+      [Stat.dexterity]: savingThrows.includes(Stat.dexterity),
+      [Stat.constitution]: savingThrows.includes(Stat.constitution),
+      [Stat.intelligence]: savingThrows.includes(Stat.intelligence),
+      [Stat.wisdom]: savingThrows.includes(Stat.wisdom),
+      [Stat.charisma]: savingThrows.includes(Stat.charisma),
     };
 
     this.skills = {
-      [SkillEnum.acrobatics]: skills.includes(SkillEnum.acrobatics),
-      [SkillEnum.animalHandling]: skills.includes(SkillEnum.animalHandling),
-      [SkillEnum.arcana]: skills.includes(SkillEnum.arcana),
-      [SkillEnum.athltetics]: skills.includes(SkillEnum.athltetics),
-      [SkillEnum.deception]: skills.includes(SkillEnum.deception),
-      [SkillEnum.history]: skills.includes(SkillEnum.history),
-      [SkillEnum.insight]: skills.includes(SkillEnum.insight),
-      [SkillEnum.intimidation]: skills.includes(SkillEnum.intimidation),
-      [SkillEnum.investigation]: skills.includes(SkillEnum.investigation),
-      [SkillEnum.medicine]: skills.includes(SkillEnum.medicine),
-      [SkillEnum.nature]: skills.includes(SkillEnum.nature),
-      [SkillEnum.perception]: skills.includes(SkillEnum.perception),
-      [SkillEnum.performance]: skills.includes(SkillEnum.performance),
-      [SkillEnum.persuasion]: skills.includes(SkillEnum.persuasion),
-      [SkillEnum.religion]: skills.includes(SkillEnum.religion),
-      [SkillEnum.sleightOfHand]: skills.includes(SkillEnum.sleightOfHand),
-      [SkillEnum.stealth]: skills.includes(SkillEnum.stealth),
-      [SkillEnum.suvival]: skills.includes(SkillEnum.suvival),
+      [Skill.acrobatics]: skills.includes(Skill.acrobatics),
+      [Skill.animalHandling]: skills.includes(Skill.animalHandling),
+      [Skill.arcana]: skills.includes(Skill.arcana),
+      [Skill.athltetics]: skills.includes(Skill.athltetics),
+      [Skill.deception]: skills.includes(Skill.deception),
+      [Skill.history]: skills.includes(Skill.history),
+      [Skill.insight]: skills.includes(Skill.insight),
+      [Skill.intimidation]: skills.includes(Skill.intimidation),
+      [Skill.investigation]: skills.includes(Skill.investigation),
+      [Skill.medicine]: skills.includes(Skill.medicine),
+      [Skill.nature]: skills.includes(Skill.nature),
+      [Skill.perception]: skills.includes(Skill.perception),
+      [Skill.performance]: skills.includes(Skill.performance),
+      [Skill.persuasion]: skills.includes(Skill.persuasion),
+      [Skill.religion]: skills.includes(Skill.religion),
+      [Skill.sleightOfHand]: skills.includes(Skill.sleightOfHand),
+      [Skill.stealth]: skills.includes(Skill.stealth),
+      [Skill.suvival]: skills.includes(Skill.suvival),
     };
   }
 
   addXP(xp: number) {
     this.xp += xp;
+  }
+
+  get subRaceOptions(): SubRace[] {
+    return subRaceMap[this.race] || [];
+  }
+
+  get hasSubRaceOptions(): boolean {
+    return this.subRaceOptions.length > 0;
   }
 
   get levelExplanation(): string {
@@ -332,52 +378,65 @@ export class Adventurer {
     return bonus + 1;
   }
 
-  getBaseStat(stat: StatEnum): number {
+  getBaseStat(stat: Stat): number {
     return this.stats[stat];
   }
 
-  setBaseStat(stat: StatEnum, val: number) {
+  setBaseStat(stat: Stat, val: number) {
     this.stats[stat] = val;
   }
 
-  getStat(stat: StatEnum): number {
+  getStat(stat: Stat): number {
     return this.statExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 
-  statExplanation(stat: StatEnum): ReasonedModifier[] {
+  statExplanation(stat: Stat): ReasonedModifier[] {
+    const reasons: ReasonedModifier[] = [];
+
     // base
-    const base: ReasonedModifier[] = [
-      {
-        reason: 'Base',
-        amount: this.getBaseStat(stat),
-        isBase: true,
-      },
-    ];
+    reasons.push({
+      reason: 'Base',
+      amount: this.getBaseStat(stat),
+      isBase: true,
+    });
 
     // race
-    const race: ReasonedModifier[] = [
-      {
+    if (this.race) {
+      reasons.push({
         reason: this.race,
-        amount: raceStatModifier(this.race, stat),
-      },
-    ];
+        amount: raceStatModifiers[this.race][SubRace.all]
+          ? raceStatModifiers[this.race][SubRace.all][stat] || 0
+          : 0,
+      });
+    }
 
-    const clss: ReasonedModifier[] = [
-      {
+    // subRace
+    if (this.subRace !== SubRace.all) {
+      reasons.push({
+        reason: `${this.subRace} ${this.race}`,
+        amount: raceStatModifiers[this.race][this.subRace]
+          ? raceStatModifiers[this.race][this.subRace][stat] || 0
+          : 0,
+      });
+    }
+
+    // class
+    if (this.clss) {
+      reasons.push({
         reason: this.clss,
         amount: classStatModifier(this.clss, stat),
-      },
-    ];
+      });
+    }
 
     // send back the list, filtering out "zero" amounts
-    return [].concat(base, race, clss).filter((x) => x.amount !== 0);
+    return reasons.filter((x) => x.amount !== 0);
   }
 
-  statModifier(stat: StatEnum): number {
+  statModifier(stat: Stat): number {
     return this.statModifierExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 
-  statModifierExplanation(stat: StatEnum): ReasonedModifier[] {
+  statModifierExplanation(stat: Stat): ReasonedModifier[] {
     const delta = this.getStat(stat) - 10;
     const isNeg = delta < 0;
     const amount = Math.floor(Math.abs(delta) / 2) * (isNeg ? -1 : 1);
@@ -390,11 +449,11 @@ export class Adventurer {
     ];
   }
 
-  hasSkill(skill: SkillEnum): boolean {
+  hasSkill(skill: Skill): boolean {
     return this.skills[skill];
   }
 
-  setSkill(skill: SkillEnum, has: boolean) {
+  setSkill(skill: Skill, has: boolean) {
     this.skills[skill] = has;
   }
 
@@ -406,11 +465,11 @@ export class Adventurer {
   //   );
   // }
 
-  skillStat(skill: SkillEnum): StatEnum {
+  skillStat(skill: Skill): Stat {
     return skillStatMap[skill];
   }
 
-  skillExplanation(skill: SkillEnum): ReasonedModifier[] {
+  skillExplanation(skill: Skill): ReasonedModifier[] {
     // stat
     const base: ReasonedModifier[] = [
       {
@@ -431,16 +490,16 @@ export class Adventurer {
     return [].concat(base, proficiency).filter((x) => x.amount !== 0);
   }
 
-  skillModifier(skill: SkillEnum): number {
+  skillModifier(skill: Skill): number {
     return this.skillExplanation(skill).reduce((a, b) => a + b.amount, 0);
   }
 
   // Saving Throws
-  hasSavingThrow(stat: StatEnum): boolean {
+  hasSavingThrow(stat: Stat): boolean {
     return !!this.savingThrows[stat];
   }
 
-  setSavingThrow(stat: StatEnum, val: boolean): this {
+  setSavingThrow(stat: Stat, val: boolean): this {
     if (val) {
       this.savingThrows[stat] = true;
     } else {
@@ -449,7 +508,7 @@ export class Adventurer {
     return this;
   }
 
-  savingThrowExplanation(stat: StatEnum): ReasonedModifier[] {
+  savingThrowExplanation(stat: Stat): ReasonedModifier[] {
     const reasons: ReasonedModifier[] = [
       {
         reason: stat,
@@ -467,7 +526,7 @@ export class Adventurer {
     return reasons;
   }
 
-  savingThrowModifier(stat: StatEnum): number {
+  savingThrowModifier(stat: Stat): number {
     return this.savingThrowExplanation(stat).reduce((a, b) => a + b.amount, 0);
   }
 }

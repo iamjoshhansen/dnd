@@ -3,7 +3,11 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Character Name</span>
-        <input class="input text-input" type="text" [(ngModel)]="adventurer.characterName" />
+        <input
+          class="input text-input"
+          type="text"
+          [(ngModel)]="adventurer.characterName"
+        />
       </label>
     </div>
   </div>
@@ -49,24 +53,43 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Player Name</span>
-        <input class="input text-input" type="text" [(ngModel)]="adventurer.playerName" />
+        <input
+          class="input text-input"
+          type="text"
+          [(ngModel)]="adventurer.playerName"
+        />
       </label>
     </div>
 
     <div class="input-set">
-      <label class="input-label">
+      <label
+        class="input-label"
+        [class.two-part]="adventurer.hasSubRaceOptions"
+      >
         <span class="text-label">Race</span>
         <select class="input text-input" [(ngModel)]="adventurer.race">
-          <option val="">...</option>
-          <option val="dragonborn">{{ RaceEnum.dragonborn }}</option>
-          <option val="dwarf">{{ RaceEnum.dwarf }}</option>
-          <option val="elf">{{ RaceEnum.elf }}</option>
-          <option val="gnome">{{ RaceEnum.gnome }}</option>
-          <option val="halfElf">{{ RaceEnum.halfElf }}</option>
-          <option val="halfOrc">{{ RaceEnum.halfOrc }}</option>
-          <option val="halfling">{{ RaceEnum.halfling }}</option>
-          <option val="human">{{ RaceEnum.human }}</option>
-          <option val="tiefling">{{ RaceEnum.tiefling }}</option>
+          <option value="">...</option>
+          <option [attr.value]="Race.dragonborn">{{ Race.dragonborn }}</option>
+          <option [attr.value]="Race.dwarf">{{ Race.dwarf }}</option>
+          <option [attr.value]="Race.elf">{{ Race.elf }}</option>
+          <option [attr.value]="Race.gnome">{{ Race.gnome }}</option>
+          <option [attr.value]="Race.halfElf">{{ Race.halfElf }}</option>
+          <option [attr.value]="Race.halfOrc">{{ Race.halfOrc }}</option>
+          <option [attr.value]="Race.halfling">{{ Race.halfling }}</option>
+          <option [attr.value]="Race.human">{{ Race.human }}</option>
+          <option [attr.value]="Race.tiefling">{{ Race.tiefling }}</option>
+        </select>
+        <select
+          *ngIf="adventurer.hasSubRaceOptions"
+          class="input input-2 light"
+          [(ngModel)]="adventurer.subRace"
+        >
+          <!-- <option [attr.value]="SubRace.all"></option> -->
+          <option
+            *ngFor="let subRace of adventurer.subRaceOptions"
+            [attr.value]="subRace"
+            >{{ subRace }}</option
+          >
         </select>
       </label>
     </div>
@@ -76,15 +99,33 @@
         <span class="text-label">Alignment</span>
         <select class="input text-input" [(ngModel)]="adventurer.alignment">
           <option val="">...</option>
-          <option [attr.val]="AlignmentEnum.lawfullGood">{{ AlignmentEnum.lawfullGood }}</option>
-          <option [attr.val]="AlignmentEnum.nuetralGood">{{ AlignmentEnum.nuetralGood }}</option>
-          <option [attr.val]="AlignmentEnum.chaoticGood">{{ AlignmentEnum.chaoticGood }}</option>
-          <option [attr.val]="AlignmentEnum.lawfulNeutral">{{ AlignmentEnum.lawfulNeutral }}</option>
-          <option [attr.val]="AlignmentEnum.nuetral">{{ AlignmentEnum.nuetral }}</option>
-          <option [attr.val]="AlignmentEnum.chaoticNeutral">{{ AlignmentEnum.chaoticNeutral }}</option>
-          <option [attr.val]="AlignmentEnum.lawfullEvil">{{ AlignmentEnum.lawfullEvil }}</option>
-          <option [attr.val]="AlignmentEnum.nuetralEvil">{{ AlignmentEnum.nuetralEvil }}</option>
-          <option [attr.val]="AlignmentEnum.chaoticEvil">{{ AlignmentEnum.chaoticEvil }}</option>
+          <option [attr.val]="Alignment.lawfullGood">{{
+            Alignment.lawfullGood
+          }}</option>
+          <option [attr.val]="Alignment.nuetralGood">{{
+            Alignment.nuetralGood
+          }}</option>
+          <option [attr.val]="Alignment.chaoticGood">{{
+            Alignment.chaoticGood
+          }}</option>
+          <option [attr.val]="Alignment.lawfulNeutral">{{
+            Alignment.lawfulNeutral
+          }}</option>
+          <option [attr.val]="Alignment.nuetral">{{
+            Alignment.nuetral
+          }}</option>
+          <option [attr.val]="Alignment.chaoticNeutral">{{
+            Alignment.chaoticNeutral
+          }}</option>
+          <option [attr.val]="Alignment.lawfullEvil">{{
+            Alignment.lawfullEvil
+          }}</option>
+          <option [attr.val]="Alignment.nuetralEvil">{{
+            Alignment.nuetralEvil
+          }}</option>
+          <option [attr.val]="Alignment.chaoticEvil">{{
+            Alignment.chaoticEvil
+          }}</option>
         </select>
       </label>
     </div>
@@ -92,7 +133,12 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Experience Points</span>
-        <input [(ngModel)]="adventurer.xp" class="input text-input" type="number" min="0" />
+        <input
+          [(ngModel)]="adventurer.xp"
+          class="input text-input"
+          type="number"
+          min="0"
+        />
       </label>
     </div>
   </div>
@@ -107,8 +153,13 @@
           {{ adventurer.statModifier(stat) | modifier }}
 
           <ul class="explanation tooltip">
-            <li *ngFor="let part of adventurer.statModifierExplanation(stat)" class="explanation__part">
-              <span class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
+            <li
+              *ngFor="let part of adventurer.statModifierExplanation(stat)"
+              class="explanation__part"
+            >
+              <span class="explanation__part__amount">{{
+                part.isBase ? part.amount : (part.amount | modifier)
+              }}</span>
               <span class="explanation__part__reason">{{ part.reason }}</span>
             </li>
           </ul>
@@ -117,8 +168,13 @@
           {{ adventurer.getStat(stat) }}
 
           <ul class="explanation tooltip">
-            <li *ngFor="let part of adventurer.statExplanation(stat)" class="explanation__part">
-              <span class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
+            <li
+              *ngFor="let part of adventurer.statExplanation(stat)"
+              class="explanation__part"
+            >
+              <span class="explanation__part__amount">{{
+                part.isBase ? part.amount : (part.amount | modifier)
+              }}</span>
               <span class="explanation__part__reason">{{ part.reason }}</span>
             </li>
           </ul>
@@ -136,14 +192,24 @@
       <ul class="checklist">
         <li class="check" *ngFor="let stat of stats">
           <label>
-            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSavingThrow(stat)"
-              (change)="adventurer.setSavingThrow(stat, $event.target.checked)" />
-            <span class="check--modifier">{{ adventurer.savingThrowModifier(stat) | modifier }}</span>
+            <input
+              class="checkbox"
+              type="checkbox"
+              [checked]="adventurer.hasSavingThrow(stat)"
+              (change)="adventurer.setSavingThrow(stat, $event.target.checked)"
+            />
+            <span class="check--modifier">{{
+              adventurer.savingThrowModifier(stat) | modifier
+            }}</span>
             <span class="check--label">{{ stat }}</span>
             <ul class="explanation tooltip">
-              <li *ngFor="let part of adventurer.savingThrowExplanation(stat)" class="explanation__part">
-                <span
-                  class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
+              <li
+                *ngFor="let part of adventurer.savingThrowExplanation(stat)"
+                class="explanation__part"
+              >
+                <span class="explanation__part__amount">{{
+                  part.isBase ? part.amount : (part.amount | modifier)
+                }}</span>
                 <span class="explanation__part__reason">{{ part.reason }}</span>
               </li>
             </ul>
@@ -157,15 +223,27 @@
       <ul class="checklist">
         <li class="check" *ngFor="let skill of skills">
           <label>
-            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSkill(skill)"
-              (change)="adventurer.setSkill(skill, $event.target.checked)" />
-            <span class="check--modifier">{{ adventurer.skillModifier(skill) | modifier }}</span>
+            <input
+              class="checkbox"
+              type="checkbox"
+              [checked]="adventurer.hasSkill(skill)"
+              (change)="adventurer.setSkill(skill, $event.target.checked)"
+            />
+            <span class="check--modifier">{{
+              adventurer.skillModifier(skill) | modifier
+            }}</span>
             <span class="check--label">{{ skill }}</span>
-            <span class="check--stat">({{ adventurer.skillStat(skill).substring(0,3) }})</span>
+            <span class="check--stat"
+              >({{ adventurer.skillStat(skill).substring(0, 3) }})</span
+            >
             <ul class="explanation tooltip">
-              <li *ngFor="let part of adventurer.skillExplanation(skill)" class="explanation__part">
-                <span
-                  class="explanation__part__amount">{{ part.isBase ? part.amount : (part.amount | modifier) }}</span>
+              <li
+                *ngFor="let part of adventurer.skillExplanation(skill)"
+                class="explanation__part"
+              >
+                <span class="explanation__part__amount">{{
+                  part.isBase ? part.amount : (part.amount | modifier)
+                }}</span>
                 <span class="explanation__part__reason">{{ part.reason }}</span>
               </li>
             </ul>
