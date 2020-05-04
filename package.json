@@ -1,0 +1,38 @@
+{
+  "name": "dnd",
+  "version": "1.0.0",
+  "description": "DnD FTW!!!",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "audit": "lerna run audit",
+    "bootstrap": "lerna bootstrap",
+    "build:watch": "lerna run build:watch --stream",
+    "build": "lerna run build --stream",
+    "clean": "lerna run clean --stream",
+    "postclean": "rm -r ./node_modules",
+    "deploy": "node ./deploy.js",
+    "postinstall": "npm run bootstrap",
+    "install:prod": "npm ci",
+    "postinstall:prod": "lerna bootstrap --ci",
+    "prettier:check": "npm run prettier -- --l",
+    "prettier:fix:build": "npm run prettier:fix && npm run build",
+    "prettier:fix": "npm run prettier -- --write",
+    "prettier": "prettier \"**/*.ts\" \"**/*.css\"",
+    "prune:prod": "lerna exec npm prune -- --production",
+    "start:prod": "lerna run start:prod --stream",
+    "start": "lerna run start --stream",
+    "test": "lerna run test --stream"
+  },
+  "keywords": [
+    "DnD"
+  ],
+  "author": "Joshua Hansen <josh@iamjoshhansen.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "lerna": "^3.20.2"
+  }
+}

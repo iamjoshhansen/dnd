@@ -13,9 +13,31 @@ import { PlayerComponent } from './pages/player/player.component';
 import { AdventurerComponent } from './components/adventurer/adventurer.component';
 import { ModifierPipe } from './pipes/modifier/modifier.pipe';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {
+  url: `http://${window.location.hostname}:4145`,
+  options: {},
+};
+
 @NgModule({
-  declarations: [AppComponent, SpellsComponent, SpellComponent, LoadingComponent, ClassComponent, PlayerComponent, AdventurerComponent, ModifierPipe],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  declarations: [
+    AppComponent,
+    SpellsComponent,
+    SpellComponent,
+    LoadingComponent,
+    ClassComponent,
+    PlayerComponent,
+    AdventurerComponent,
+    ModifierPipe,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    SocketIoModule.forRoot(config),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

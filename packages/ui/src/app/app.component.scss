@@ -1,8 +1,14 @@
 :host {
-  display: block;
+  display: grid;
   padding: 10px;
   min-height: 100vh;
   box-sizing: border-box;
+
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    'title nav'
+    'content content';
 
   --background: #eeeeee;
   --mostly-background: #eeeeeeee;
@@ -18,15 +24,41 @@
   color: var(--text-color);
 }
 
-nav ul {
+h1 {
+  grid-area: title;
   margin: 0;
   padding: 0;
-  list-style-type: none;
-  display: flex;
-  margin: 0 -0.5em;
+}
 
-  li {
-    margin: 0;
+nav {
+  grid-area: nav;
+  display: flex;
+  align-content: center;
+  align-self: center;
+
+  .connected-icon {
+    color: #ccc;
+    transition: color 200ms ease-in-out;
+    font-size: 1em;
     padding: 0.5em;
+    margin-left: 1em;
+
+
+    &.connected {
+      color: #060;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    margin: 0 -0.5em;
+
+    li {
+      margin: 0;
+      padding: 0.5em;
+    }
   }
 }
