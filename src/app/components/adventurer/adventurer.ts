@@ -139,6 +139,24 @@ export type SkillsInterface = Record<Skill, boolean>;
 type SkillsList = Skill[];
 type SavingThrowList = Stat[];
 
+export enum Background {
+  acolyte = 'Acolyte',
+  criminalSpy = 'Criminal / Spy',
+  folkHero = 'Folk Hero',
+  noble = 'Noble',
+  sage = 'Sage',
+  soldier = 'Soldier',
+}
+
+export const backgroundProficiencyMap: Record<Background, Skill[]> = {
+  [Background.acolyte]: [Skill.insight, Skill.religion],
+  [Background.criminalSpy]: [Skill.deception, Skill.stealth],
+  [Background.folkHero]: [Skill.animalHandling, Skill.survival],
+  [Background.noble]: [Skill.history, Skill.persuasion],
+  [Background.sage]: [Skill.arcana, Skill.history],
+  [Background.soldier]: [Skill.athletics, Skill.intimidation],
+};
+
 interface ReasonedModifier {
   amount: number;
   reason: string;
@@ -235,11 +253,20 @@ const raceStatModifiers: Record<
   },
 };
 
-console.log(raceStatModifiers);
-
-// function raceStatModifier(race: RaceEnum, stat: StatEnum) {
-//   return raceStatModifiers[race][stat] || 0;
-// }
+const hitDiceMap: Record<Clss, number> = {
+  [Clss.wizard]: 6,
+  [Clss.sorcerer]: 6,
+  [Clss.bard]: 8,
+  [Clss.cleric]: 8,
+  [Clss.druid]: 8,
+  [Clss.monk]: 8,
+  [Clss.rogue]: 8,
+  [Clss.warlock]: 8,
+  [Clss.fighter]: 10,
+  [Clss.paladin]: 10,
+  [Clss.ranger]: 10,
+  [Clss.barbarian]: 12,
+};
 
 const classStatModifiers: Record<Clss, Partial<Record<Stat, number>>> = {
   [Clss.barbarian]: {},
@@ -264,6 +291,7 @@ export interface AdventurerData {
   characterName?: string;
   playerName?: string;
   alignment?: Alignment;
+  background?: Background;
   xp?: number;
   clss?: Clss;
   race?: Race;
@@ -271,6 +299,8 @@ export interface AdventurerData {
   stats?: StatsInterface;
   skills?: SkillsList;
   savingThrows?: SavingThrowList;
+  initiative?: number;
+  inspiration?: number;
 }
 
 export class Adventurer {
@@ -281,6 +311,9 @@ export class Adventurer {
   public subRace: SubRace;
   public xp: number;
   public alignment?: Alignment;
+  public background: Background;
+  public initiative: number;
+  public inspiration: number;
 
   private stats: StatsInterface;
   private skills: SkillsInterface;
@@ -291,12 +324,15 @@ export class Adventurer {
     race,
     subRace = SubRace.all,
     alignment,
+    background,
     stats,
     xp = 0,
     characterName = '',
     playerName = '',
     skills = [],
     savingThrows = [],
+    initiative,
+    inspiration,
   }: AdventurerData) {
     this.characterName = characterName;
     this.playerName = playerName;
@@ -306,6 +342,9 @@ export class Adventurer {
     this.xp = xp;
     this.alignment = alignment;
     this.stats = stats;
+    this.background = background;
+    this.initiative = initiative;
+    this.inspiration = inspiration;
 
     this.savingThrows = {
       [Stat.strength]: savingThrows.includes(Stat.strength),
@@ -320,7 +359,7 @@ export class Adventurer {
       [Skill.acrobatics]: skills.includes(Skill.acrobatics),
       [Skill.animalHandling]: skills.includes(Skill.animalHandling),
       [Skill.arcana]: skills.includes(Skill.arcana),
-      [Skill.athltetics]: skills.includes(Skill.athltetics),
+      [Skill.athletics]: skills.includes(Skill.athletics),
       [Skill.deception]: skills.includes(Skill.deception),
       [Skill.history]: skills.includes(Skill.history),
       [Skill.insight]: skills.includes(Skill.insight),
@@ -334,7 +373,7 @@ export class Adventurer {
       [Skill.religion]: skills.includes(Skill.religion),
       [Skill.sleightOfHand]: skills.includes(Skill.sleightOfHand),
       [Skill.stealth]: skills.includes(Skill.stealth),
-      [Skill.suvival]: skills.includes(Skill.suvival),
+      [Skill.survival]: skills.includes(Skill.survival),
     };
   }
 
@@ -528,5 +567,27 @@ export class Adventurer {
 
   savingThrowModifier(stat: Stat): number {
     return this.savingThrowExplanation(stat).reduce((a, b) => a + b.amount, 0);
+  }
+
+  get armorClass(): number {
+    return 10 + this.statModifier(Stat.dexterity);
+  }
+
+  get speed(): number {
+    switch (this.race) {
+      case Race.dwarf:
+      case Race.gnome:
+        return 25;
+      default:
+        return 30;
+    }
+  }
+
+  get currentHitPoints(): number {
+    return 10 + this.statModifier(Stat.constitution);
+  }
+
+  get hitDice(): string {
+    return `${this.level}d${hitDiceMap[this.clss]}`;
   }
 }

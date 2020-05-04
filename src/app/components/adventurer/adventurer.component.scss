@@ -66,6 +66,7 @@
 
     .input {
       grid-area: input;
+      border-bottom: solid 1px var(--faint-border);
     }
 
     .input-2 {
@@ -87,7 +88,6 @@
 .input {
   background: none;
   border: none;
-  border-bottom: solid 1px var(--faint-border);
   padding: 0.25em 0;
   border-radius: 0;
   box-sizing: border-box;
@@ -283,8 +283,6 @@ select {
     }
 
     .stat-modifier {
-      font-size: 1.5em;
-      padding: 0.5em 0;
       position: relative;
 
       &:hover {
@@ -330,7 +328,7 @@ select {
     }
 
     &--modifier {
-      margin-left: 1em;
+      margin-left: 1.5em;
       display: inline-block;
       width: 2ch;
       text-align: right;
@@ -428,5 +426,18 @@ select {
     font-family: "Share Tech Mono", monospace;
     text-transform: uppercase;
     font-size: 0.5em;
+    padding: 0.5em;
   }
+}
+
+.centered,
+.big-number {
+  display: block;
+  text-align: center;
+  align-self: center;
+}
+
+.big-number {
+  font-size: 1.5em;
+  padding: 0.5em;
 }

@@ -46,7 +46,14 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Background</span>
-        <input class="input text-input" type="text" />
+        <select [(ngModel)]="adventurer.background" class="input">
+          <option>{{ Background.acolyte }}</option>
+          <option>{{ Background.criminalSpy }}</option>
+          <option>{{ Background.folkHero }}</option>
+          <option>{{ Background.noble }}</option>
+          <option>{{ Background.sage }}</option>
+          <option>{{ Background.soldier }}</option>
+        </select>
       </label>
     </div>
 
@@ -149,7 +156,7 @@
     <ul class="stats">
       <li class="stat" *ngFor="let stat of stats">
         <div class="stat-label">{{ stat }}</div>
-        <div class="stat-modifier">
+        <div class="stat-modifier big-number">
           {{ adventurer.statModifier(stat) | modifier }}
 
           <ul class="explanation tooltip">
@@ -181,7 +188,10 @@
         </div>
       </li>
     </ul>
-    <div class="inspiration">inspiration</div>
+    <div class="inspiration">
+      <input class="input" type="number" [(ngModel)]="adventurer.inspiration" />
+      inspiration
+    </div>
     <div class="proficiency">
       +{{ adventurer.proficiencyBonus }}
       Proficiency Bonus
@@ -259,22 +269,31 @@
 
   <section class="battle">
     <div class="labeled-section battle--ar">
-      <h4 class="section-label">Armor<br />Class</h4>
+      <h4 class="section-label">Armor Class</h4>
+      <div class="big-number">{{ adventurer.armorClass }}</div>
     </div>
     <div class="labeled-section battle--in">
       <h4 class="section-label">Initiative</h4>
+      <input
+        class="input big-number"
+        type="number"
+        [(ngModel)]="adventurer.initiative"
+      />
     </div>
     <div class="labeled-section battle--sp">
       <h4 class="section-label">Speed</h4>
+      <div class="big-number">{{ adventurer.speed }}</div>
     </div>
     <div class="labeled-section battle--ch">
       <h4 class="section-label">Current Hit Points</h4>
+      <div class="big-number">{{ adventurer.currentHitPoints }}</div>
     </div>
     <div class="labeled-section battle--th">
       <h4 class="section-label">Temporary Hit Points</h4>
     </div>
     <div class="labeled-section battle--hd">
       <h4 class="section-label">Hit Dice</h4>
+      <div class="big-number">{{ adventurer.hitDice }}</div>
     </div>
     <div class="labeled-section battle--ds">
       <h4 class="section-label">Death Saves</h4>

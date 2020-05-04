@@ -7,6 +7,7 @@ import {
   Stat,
   Skill,
   Alignment,
+  Background,
 } from './adventurer';
 
 @Component({
@@ -24,21 +25,23 @@ export class AdventurerComponent implements OnInit {
     race: Race.gnome,
     subRace: SubRace.deep,
     stats: {
-      [Stat.strength]: 8,
+      [Stat.strength]: 13,
       [Stat.dexterity]: 15,
       [Stat.constitution]: 14,
       [Stat.intelligence]: 19,
       [Stat.wisdom]: 13,
-      [Stat.charisma]: 13,
+      [Stat.charisma]: 8,
     },
-    skills: [Skill.investigation, Skill.arcana],
+    skills: [Skill.insight, Skill.investigation, Skill.arcana, Skill.history],
     savingThrows: [Stat.intelligence, Stat.wisdom],
+    background: Background.sage,
   });
 
   Stat = Stat;
   Race = Race;
   SubRace = SubRace;
   Alignment = Alignment;
+  Background = Background;
 
   stats: Stat[] = [
     Stat.strength,
