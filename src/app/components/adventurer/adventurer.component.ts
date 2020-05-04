@@ -53,7 +53,7 @@ export class AdventurerComponent implements OnInit {
     Skill.acrobatics,
     Skill.animalHandling,
     Skill.arcana,
-    Skill.athltetics,
+    Skill.athletics,
     Skill.deception,
     Skill.history,
     Skill.insight,
@@ -67,7 +67,7 @@ export class AdventurerComponent implements OnInit {
     Skill.religion,
     Skill.sleightOfHand,
     Skill.stealth,
-    Skill.suvival,
+    Skill.survival,
   ];
 
   constructor() {}

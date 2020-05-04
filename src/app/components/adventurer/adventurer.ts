@@ -87,7 +87,7 @@ export enum Skill {
   acrobatics = 'Acrobatics',
   animalHandling = 'Animal Handling',
   arcana = 'Arcana',
-  athltetics = 'Athltetics',
+  athletics = 'Athltetics',
   deception = 'Deception',
   history = 'History',
   insight = 'Insight',
@@ -101,7 +101,7 @@ export enum Skill {
   religion = 'Religion',
   sleightOfHand = 'Sleight of Hand',
   stealth = 'Stealth',
-  suvival = 'Suvival',
+  survival = 'Suvival',
 }
 
 export enum Stat {
@@ -117,7 +117,7 @@ const skillStatMap: Record<Skill, Stat> = {
   [Skill.acrobatics]: Stat.dexterity,
   [Skill.animalHandling]: Stat.wisdom,
   [Skill.arcana]: Stat.intelligence,
-  [Skill.athltetics]: Stat.strength,
+  [Skill.athletics]: Stat.strength,
   [Skill.deception]: Stat.charisma,
   [Skill.history]: Stat.intelligence,
   [Skill.insight]: Stat.wisdom,
@@ -131,7 +131,7 @@ const skillStatMap: Record<Skill, Stat> = {
   [Skill.religion]: Stat.intelligence,
   [Skill.sleightOfHand]: Stat.dexterity,
   [Skill.stealth]: Stat.dexterity,
-  [Skill.suvival]: Stat.wisdom,
+  [Skill.survival]: Stat.wisdom,
 };
 
 export type StatsInterface = Record<Stat, number>;
