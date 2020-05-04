@@ -7,18 +7,8 @@
   grid-template-columns: 1fr min-content;
   grid-template-rows: min-content 1fr;
   grid-template-areas:
-    'title nav'
-    'content content';
-
-  --background: #ffffff;
-  --mostly-background: #ffffffee;
-  --text-color: #333;
-  --link-color: #09f;
-  --link-focus-outline: #0099ff99;
-  --dim-color: #333333cc;
-  --faint-background: #eeeeee;
-  --faint-border: #00000055;
-  --checkbox-selected: #393;
+    "title nav"
+    "content content";
 
   background: var(--background);
   color: var(--text-color);
@@ -36,13 +26,15 @@ nav {
   align-content: center;
   align-self: center;
 
+  &>* {
+    margin-left: 1em;
+  }
+
   .connected-icon {
     color: #ccc;
     transition: color 200ms ease-in-out;
     font-size: 1em;
     padding: 0.5em;
-    margin-left: 1em;
-
 
     &.connected {
       color: #060;
@@ -61,4 +53,12 @@ nav {
       padding: 0.5em;
     }
   }
+}
+
+.icon-button {
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: 1em;
 }

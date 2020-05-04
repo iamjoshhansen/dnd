@@ -4,6 +4,8 @@
     <li><a routerLink="spells">Spells</a></li>
     <li><a routerLink="adventurer">Adventurer</a></li>
   </ul>
-  <i class="connected-icon fas fa-dice-d20" [class.connected]="connected | async"></i>
+  <button class="icon-button" (click)="toggleTheme()" (keydown.return)="toggleTheme()" title="Change theme"><i
+      class="icon fas fa-palette"></i></button>
+  <i class="icon connected-icon fas fa-dice-d20" [class.connected]="connected | async"></i>
 </nav>
 <router-outlet></router-outlet>
