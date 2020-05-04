@@ -1,8 +1,17 @@
 :host {
   display: grid;
-  min-width: 768px;
-  max-width: 1024px;
   margin: 0 auto;
+  grid-template-rows: min-content 1fr;
+  gap: 1em;
+
+  @media screen {
+    min-width: 748px;
+    max-width: 1004px;
+  }
+
+  @media print {
+    font-size: 0.9em;
+  }
 }
 
 .header {
@@ -116,6 +125,7 @@ select {
 .adventure-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 10fr 8fr 1fr 6fr;
   gap: 10px;
   grid-template-areas:
     "skills battle    personality"
@@ -439,5 +449,5 @@ select {
 
 .big-number {
   font-size: 1.5em;
-  padding: 0.5em;
+  padding: 0 0.5em;
 }

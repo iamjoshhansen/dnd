@@ -15,16 +15,18 @@ body {
   --faint-border: #00000055;
   --checkbox-selected: #393;
 
-  &.theme--dark {
-    --background: #101010;
-    --mostly-background: #101010ee;
-    --text-color: #eee;
-    --link-color: #090;
-    --link-focus-outline: #00990099;
-    --dim-color: #cccccccc;
-    --faint-background: #333333;
-    --faint-border: #ffffff55;
-    --checkbox-selected: #393;
+  @media screen {
+    &.theme--dark {
+      --background: #101010;
+      --mostly-background: #101010ee;
+      --text-color: #eee;
+      --link-color: #090;
+      --link-focus-outline: #00990099;
+      --dim-color: #cccccccc;
+      --faint-background: #333333;
+      --faint-border: #ffffff55;
+      --checkbox-selected: #393;
+    }
   }
 }
 

@@ -18,6 +18,10 @@ h1 {
   grid-area: title;
   margin: 0;
   padding: 0;
+
+  @media print {
+    display: none;
+  }
 }
 
 nav {
@@ -25,6 +29,10 @@ nav {
   display: flex;
   align-content: center;
   align-self: center;
+
+  @media print {
+    display: none;
+  }
 
   &>* {
     margin-left: 1em;
