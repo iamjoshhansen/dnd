@@ -3,11 +3,7 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Character Name</span>
-        <input
-          class="input text-input"
-          type="text"
-          [(ngModel)]="adventurer.characterName"
-        />
+        <input class="input text-input" type="text" [(ngModel)]="adventurer.characterName" />
       </label>
     </div>
   </div>
@@ -60,19 +56,12 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Player Name</span>
-        <input
-          class="input text-input"
-          type="text"
-          [(ngModel)]="adventurer.playerName"
-        />
+        <input class="input text-input" type="text" [(ngModel)]="adventurer.playerName" />
       </label>
     </div>
 
     <div class="input-set">
-      <label
-        class="input-label"
-        [class.two-part]="adventurer.hasSubRaceOptions"
-      >
+      <label class="input-label" [class.two-part]="adventurer.hasSubRaceOptions">
         <span class="text-label">Race</span>
         <select class="input text-input" [(ngModel)]="adventurer.race">
           <option value="">...</option>
@@ -86,17 +75,9 @@
           <option [attr.value]="Race.human">{{ Race.human }}</option>
           <option [attr.value]="Race.tiefling">{{ Race.tiefling }}</option>
         </select>
-        <select
-          *ngIf="adventurer.hasSubRaceOptions"
-          class="input input-2 light"
-          [(ngModel)]="adventurer.subRace"
-        >
+        <select *ngIf="adventurer.hasSubRaceOptions" class="input input-2 light" [(ngModel)]="adventurer.subRace">
           <!-- <option [attr.value]="SubRace.all"></option> -->
-          <option
-            *ngFor="let subRace of adventurer.subRaceOptions"
-            [attr.value]="subRace"
-            >{{ subRace }}</option
-          >
+          <option *ngFor="let subRace of adventurer.subRaceOptions" [attr.value]="subRace">{{ subRace }}</option>
         </select>
       </label>
     </div>
@@ -140,12 +121,7 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Experience Points</span>
-        <input
-          [(ngModel)]="adventurer.xp"
-          class="input text-input"
-          type="number"
-          min="0"
-        />
+        <input [(ngModel)]="adventurer.xp" class="input text-input" type="number" min="0" />
       </label>
     </div>
   </div>
@@ -160,10 +136,7 @@
           {{ adventurer.statModifier(stat) | modifier }}
 
           <ul class="explanation tooltip">
-            <li
-              *ngFor="let part of adventurer.statModifierExplanation(stat)"
-              class="explanation__part"
-            >
+            <li *ngFor="let part of adventurer.statModifierExplanation(stat)" class="explanation__part">
               <span class="explanation__part__amount">{{
                 part.isBase ? part.amount : (part.amount | modifier)
               }}</span>
@@ -175,10 +148,7 @@
           {{ adventurer.getStat(stat) }}
 
           <ul class="explanation tooltip">
-            <li
-              *ngFor="let part of adventurer.statExplanation(stat)"
-              class="explanation__part"
-            >
+            <li *ngFor="let part of adventurer.statExplanation(stat)" class="explanation__part">
               <span class="explanation__part__amount">{{
                 part.isBase ? part.amount : (part.amount | modifier)
               }}</span>
@@ -202,21 +172,14 @@
       <ul class="checklist">
         <li class="check" *ngFor="let stat of stats">
           <label>
-            <input
-              class="checkbox"
-              type="checkbox"
-              [checked]="adventurer.hasSavingThrow(stat)"
-              (change)="adventurer.setSavingThrow(stat, $event.target.checked)"
-            />
+            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSavingThrow(stat)"
+              (change)="adventurer.setSavingThrow(stat, $event.target.checked)" />
             <span class="check--modifier">{{
               adventurer.savingThrowModifier(stat) | modifier
             }}</span>
             <span class="check--label">{{ stat }}</span>
             <ul class="explanation tooltip">
-              <li
-                *ngFor="let part of adventurer.savingThrowExplanation(stat)"
-                class="explanation__part"
-              >
+              <li *ngFor="let part of adventurer.savingThrowExplanation(stat)" class="explanation__part">
                 <span class="explanation__part__amount">{{
                   part.isBase ? part.amount : (part.amount | modifier)
                 }}</span>
@@ -233,24 +196,15 @@
       <ul class="checklist">
         <li class="check" *ngFor="let skill of skills">
           <label>
-            <input
-              class="checkbox"
-              type="checkbox"
-              [checked]="adventurer.hasSkill(skill)"
-              (change)="adventurer.setSkill(skill, $event.target.checked)"
-            />
+            <input class="checkbox" type="checkbox" [checked]="adventurer.hasSkill(skill)"
+              (change)="adventurer.setSkill(skill, $event.target.checked)" />
             <span class="check--modifier">{{
               adventurer.skillModifier(skill) | modifier
             }}</span>
             <span class="check--label">{{ skill }}</span>
-            <span class="check--stat"
-              >({{ adventurer.skillStat(skill).substring(0, 3) }})</span
-            >
+            <span class="check--stat">({{ adventurer.skillStat(skill).substring(0, 3) }})</span>
             <ul class="explanation tooltip">
-              <li
-                *ngFor="let part of adventurer.skillExplanation(skill)"
-                class="explanation__part"
-              >
+              <li *ngFor="let part of adventurer.skillExplanation(skill)" class="explanation__part">
                 <span class="explanation__part__amount">{{
                   part.isBase ? part.amount : (part.amount | modifier)
                 }}</span>
@@ -274,11 +228,7 @@
     </div>
     <div class="labeled-section battle--in">
       <h4 class="section-label">Initiative</h4>
-      <input
-        class="input big-number"
-        type="number"
-        [(ngModel)]="adventurer.initiative"
-      />
+      <input class="input big-number" type="number" [(ngModel)]="adventurer.initiative" />
     </div>
     <div class="labeled-section battle--sp">
       <h4 class="section-label">Speed</h4>

@@ -1,3 +1,5 @@
+import { pruneObj, keepTrue } from 'src/app/utility/prune-obj';
+
 const xpLevelValues = [
   0,
   300,
@@ -283,24 +285,24 @@ const classStatModifiers: Record<Clss, Partial<Record<Stat, number>>> = {
   [Clss.wizard]: {},
 };
 
-function classStatModifier(clss: Clss, stat: Stat) {
-  return classStatModifiers[clss][stat] || 0;
+export interface AdventurerData {
+  characterName: string;
+  playerName: string;
+  alignment: Alignment;
+  background: Background;
+  xp: number;
+  clss: Clss;
+  race: Race;
+  subRace: SubRace;
+  stats: StatsInterface;
+  skills: SkillsList;
+  savingThrows: SavingThrowList;
+  initiative: number;
+  inspiration: number;
 }
 
-export interface AdventurerData {
-  characterName?: string;
-  playerName?: string;
-  alignment?: Alignment;
-  background?: Background;
-  xp?: number;
-  clss?: Clss;
-  race?: Race;
-  subRace?: SubRace;
-  stats?: StatsInterface;
-  skills?: SkillsList;
-  savingThrows?: SavingThrowList;
-  initiative?: number;
-  inspiration?: number;
+function watcher(key: string, val: any) {
+  console.log(`Watcher saw that ${key} changed to ${val}`);
 }
 
 export class Adventurer {
@@ -314,7 +316,6 @@ export class Adventurer {
   public background: Background;
   public initiative: number;
   public inspiration: number;
-
   private stats: StatsInterface;
   private skills: SkillsInterface;
   private savingThrows: Partial<Record<Stat, boolean>> = {};
@@ -325,7 +326,14 @@ export class Adventurer {
     subRace = SubRace.all,
     alignment,
     background,
-    stats,
+    stats = {
+      [Stat.strength]: 10,
+      [Stat.dexterity]: 10,
+      [Stat.wisdom]: 10,
+      [Stat.intelligence]: 10,
+      [Stat.constitution]: 10,
+      [Stat.charisma]: 10,
+    },
     xp = 0,
     characterName = '',
     playerName = '',
@@ -333,7 +341,7 @@ export class Adventurer {
     savingThrows = [],
     initiative,
     inspiration,
-  }: AdventurerData) {
+  }: Partial<AdventurerData>) {
     this.characterName = characterName;
     this.playerName = playerName;
     this.clss = clss;
@@ -355,6 +363,8 @@ export class Adventurer {
       [Stat.charisma]: savingThrows.includes(Stat.charisma),
     };
 
+    keepTrue(this.savingThrows);
+
     this.skills = {
       [Skill.acrobatics]: skills.includes(Skill.acrobatics),
       [Skill.animalHandling]: skills.includes(Skill.animalHandling),
@@ -375,6 +385,30 @@ export class Adventurer {
       [Skill.stealth]: skills.includes(Skill.stealth),
       [Skill.survival]: skills.includes(Skill.survival),
     };
+
+    keepTrue(this.skills);
+  }
+
+  toJSON(): Partial<AdventurerData> {
+    const data: AdventurerData = {
+      characterName: this.characterName,
+      playerName: this.playerName,
+      alignment: this.alignment,
+      background: this.background,
+      xp: this.xp,
+      clss: this.clss,
+      race: this.race,
+      subRace: this.subRace,
+      stats: this.stats,
+      skills: Object.keys(this.skills).map((x) => x as Skill),
+      savingThrows: Object.keys(this.savingThrows).map((x) => x as Stat),
+      initiative: this.initiative,
+      inspiration: this.inspiration,
+    };
+
+    pruneObj(data);
+
+    return data;
   }
 
   addXP(xp: number) {
@@ -463,7 +497,7 @@ export class Adventurer {
     if (this.clss) {
       reasons.push({
         reason: this.clss,
-        amount: classStatModifier(this.clss, stat),
+        amount: classStatModifiers[this.clss][stat] || 0,
       });
     }
 
@@ -489,11 +523,15 @@ export class Adventurer {
   }
 
   hasSkill(skill: Skill): boolean {
-    return this.skills[skill];
+    return !!this.skills[skill];
   }
 
   setSkill(skill: Skill, has: boolean) {
-    this.skills[skill] = has;
+    if (has) {
+      this.skills[skill] = true;
+    } else {
+      delete this.skills[skill];
+    }
   }
 
   // modifiedSkill(skill: SkillEnum): number {
@@ -588,6 +626,9 @@ export class Adventurer {
   }
 
   get hitDice(): string {
-    return `${this.level}d${hitDiceMap[this.clss]}`;
+    if (this.clss) {
+      return `${this.level}d${hitDiceMap[this.clss]}`;
+    }
+    return '';
   }
 }

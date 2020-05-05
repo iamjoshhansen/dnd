@@ -13,32 +13,34 @@ import { ConnectedService } from 'src/app/services/connected/connected.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+// const adventurer = new Adventurer({
+//   characterName: 'Kelryn',
+//   alignment: Alignment.nuetralGood,
+//   playerName: 'Josh Hansen',
+//   xp: 0,
+//   clss: Clss.wizard,
+//   race: Race.gnome,
+//   subRace: SubRace.deep,
+//   stats: {
+//     [Stat.strength]: 13,
+//     [Stat.dexterity]: 15,
+//     [Stat.constitution]: 14,
+//     [Stat.intelligence]: 19,
+//     [Stat.wisdom]: 13,
+//     [Stat.charisma]: 8,
+//   },
+//   skills: [Skill.insight, Skill.investigation, Skill.arcana, Skill.history],
+//   savingThrows: [Stat.intelligence, Stat.wisdom],
+//   background: Background.sage,
+// });
+
 @Component({
   selector: 'app-adventurer',
   templateUrl: './adventurer.component.html',
   styleUrls: ['./adventurer.component.scss'],
 })
 export class AdventurerComponent implements OnInit, OnDestroy {
-  @Input() adventurer = new Adventurer({
-    characterName: 'Kelryn',
-    alignment: Alignment.nuetralGood,
-    playerName: 'Josh Hansen',
-    xp: 0,
-    clss: Clss.wizard,
-    race: Race.gnome,
-    subRace: SubRace.deep,
-    stats: {
-      [Stat.strength]: 13,
-      [Stat.dexterity]: 15,
-      [Stat.constitution]: 14,
-      [Stat.intelligence]: 19,
-      [Stat.wisdom]: 13,
-      [Stat.charisma]: 8,
-    },
-    skills: [Skill.insight, Skill.investigation, Skill.arcana, Skill.history],
-    savingThrows: [Stat.intelligence, Stat.wisdom],
-    background: Background.sage,
-  });
+  @Input() adventurer: Adventurer = new Adventurer({});
 
   Stat = Stat;
   Race = Race;
