@@ -10,7 +10,7 @@ import { SpellComponent } from './pages/spells/spell/spell.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ClassComponent } from './pages/classes/class/class.component';
 import { PlayerComponent } from './pages/player/player.component';
-import { AdventurerComponent } from './components/adventurer/adventurer.component';
+import { CharacterSheetComponent } from './components/character-sheet/character-sheet.component';
 import { ModifierPipe } from './pipes/modifier/modifier.pipe';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -28,7 +28,7 @@ const config: SocketIoConfig = {
     LoadingComponent,
     ClassComponent,
     PlayerComponent,
-    AdventurerComponent,
+    CharacterSheetComponent,
     ModifierPipe,
   ],
   imports: [

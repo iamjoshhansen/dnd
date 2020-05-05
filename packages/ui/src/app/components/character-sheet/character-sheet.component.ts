@@ -9,9 +9,6 @@ import {
   Alignment,
   Background,
 } from './adventurer';
-import { ConnectedService } from 'src/app/services/connected/connected.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 // const adventurer = new Adventurer({
 //   characterName: 'Kelryn',
@@ -34,12 +31,14 @@ import { takeUntil } from 'rxjs/operators';
 //   background: Background.sage,
 // });
 
+// console.log(JSON.stringify(adventurer, null, 2));
+
 @Component({
-  selector: 'app-adventurer',
-  templateUrl: './adventurer.component.html',
-  styleUrls: ['./adventurer.component.scss'],
+  selector: 'app-character-sheet',
+  templateUrl: './character-sheet.component.html',
+  styleUrls: ['./character-sheet.component.scss'],
 })
-export class AdventurerComponent implements OnInit, OnDestroy {
+export class CharacterSheetComponent {
   @Input() adventurer: Adventurer = new Adventurer({});
 
   Stat = Stat;
@@ -77,29 +76,4 @@ export class AdventurerComponent implements OnInit, OnDestroy {
     Skill.stealth,
     Skill.survival,
   ];
-
-  private destroyed = new Subject<void>();
-
-  private socket = this.connectedService.socket;
-
-  constructor(private connectedService: ConnectedService) {}
-
-  ngOnInit(): void {
-    this.connectedService.whenConnected
-      .pipe(takeUntil(this.destroyed))
-      .subscribe(() => {
-        console.log(`Getting character...`);
-        this.getCharacter('5eaf7d46e366b9c0a86767e6');
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroyed.next();
-  }
-
-  getCharacter(id: string) {
-    this.socket.emit('get-character', id, (character: any) => {
-      console.log(`Character recieved!`, character);
-    });
-  }
 }

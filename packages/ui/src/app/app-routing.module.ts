@@ -4,9 +4,13 @@ import { SpellsComponent } from './pages/spells/spells.component';
 import { SpellComponent } from './pages/spells/spell/spell.component';
 import { ClassComponent } from './pages/classes/class/class.component';
 import { PlayerComponent } from './pages/player/player.component';
-import { AdventurerComponent } from './components/adventurer/adventurer.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'character',
+    pathMatch: 'full',
+  },
   {
     path: 'spells',
     component: SpellsComponent,
@@ -20,12 +24,8 @@ const routes: Routes = [
     component: ClassComponent,
   },
   {
-    path: 'player',
+    path: 'character',
     component: PlayerComponent,
-  },
-  {
-    path: 'adventurer',
-    component: AdventurerComponent,
   },
 ];
 

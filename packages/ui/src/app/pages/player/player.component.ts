@@ -1,83 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
-
-const xpLevelValues = [
-  0,
-  300,
-  900,
-  2700,
-  6500,
-  14000,
-  23000,
-  34000,
-  48000,
-  64000,
-  85000,
-  100000,
-  120000,
-  140000,
-  165000,
-  195000,
-  225000,
-  265000,
-  305000,
-  355000,
-];
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Adventurer } from 'src/app/components/character-sheet/adventurer';
+import { Subject } from 'rxjs';
+import { ConnectedService } from 'src/app/services/connected/connected.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss'],
 })
-export class PlayerComponent implements OnInit {
-  private xpSubject = new BehaviorSubject<number>(0);
-  readonly xpObserver = this.xpSubject.pipe(distinctUntilChanged());
-  get xp() {
-    return this.xpSubject.value;
+export class PlayerComponent implements OnInit, OnDestroy {
+  adventurer = new Adventurer({});
+
+  private destroyed = new Subject<void>();
+
+  private socket = this.connectedService.socket;
+
+  constructor(private connectedService: ConnectedService) {}
+
+  ngOnInit(): void {
+    this.connectedService.whenConnected
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        console.log(`Getting character...`);
+        this.getCharacter('5eaf7d46e366b9c0a86767e6');
+      });
   }
-  set xp(val: number) {
-    this.xpSubject.next(val);
+
+  ngOnDestroy() {
+    this.destroyed.next();
   }
-  readonly levelObserver = this.xpObserver.pipe(
-    map((xp) => {
-      let level = 0;
-      while (xp >= xpLevelValues[++level]) {}
-      return level;
-    }),
-    distinctUntilChanged()
-  );
-  readonly levelExplanationObserver = combineLatest(
-    this.xpObserver,
-    this.levelObserver
-  ).pipe(
-    map(([xp, level]) => {
-      if (level === 20) {
-        return `You maxed out at level 20 with ${
-          xpLevelValues[xpLevelValues.length - 1]
-        }xp!`;
-      }
 
-      const nextXp = xpLevelValues[level];
-      const delta = nextXp - xp;
-
-      return `You will get to level ${
-        level + 1
-      } when you have ${nextXp}xp.\nOnly ${delta} more to go!`;
-    })
-  );
-
-  readonly proficiencyBonusObserver = this.levelObserver.pipe(
-    map((level) => {
-      const levelBonusMap = [0, 5, 9, 13, 17];
-      let bonus = 0;
-      while (level >= levelBonusMap[++bonus]) {}
-      return bonus + 1;
-    }),
-    distinctUntilChanged()
-  );
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  getCharacter(id: string) {
+    this.socket.emit('get-character', id, (character: any) => {
+      console.log(`Character recieved!`, character);
+      this.adventurer = new Adventurer(character);
+    });
+  }
 }
