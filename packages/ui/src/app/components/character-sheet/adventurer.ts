@@ -285,6 +285,36 @@ const classStatModifiers: Record<Clss, Partial<Record<Stat, number>>> = {
   [Clss.wizard]: {},
 };
 
+export const stats: Stat[] = [
+  Stat.strength,
+  Stat.dexterity,
+  Stat.constitution,
+  Stat.intelligence,
+  Stat.wisdom,
+  Stat.charisma,
+];
+
+export const skills: Skill[] = [
+  Skill.acrobatics,
+  Skill.animalHandling,
+  Skill.arcana,
+  Skill.athletics,
+  Skill.deception,
+  Skill.history,
+  Skill.insight,
+  Skill.intimidation,
+  Skill.investigation,
+  Skill.medicine,
+  Skill.nature,
+  Skill.perception,
+  Skill.performance,
+  Skill.persuasion,
+  Skill.religion,
+  Skill.sleightOfHand,
+  Skill.stealth,
+  Skill.survival,
+];
+
 export interface AdventurerData {
   characterName: string;
   playerName: string;

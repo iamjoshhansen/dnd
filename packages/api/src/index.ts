@@ -25,6 +25,20 @@ async function main() {
       cb(character);
     });
 
+    client.on(
+      'save-character',
+      async ({ id, data }: { id: string; data: any }, cb: Function) => {
+        console.log(`Saving ${id}`, data);
+        await charactersCollection.findOneAndReplace(
+          {
+            _id: new ObjectId(id),
+          },
+          data
+        );
+        cb();
+      }
+    );
+
     client.on('disconnect', () => {
       console.log(`client ${clientId} has disconnected`);
     });

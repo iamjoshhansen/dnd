@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   Adventurer,
-  Clss,
   Race,
   SubRace,
   Stat,
-  Skill,
   Alignment,
   Background,
+  stats,
+  skills,
 } from './adventurer';
 
 // const adventurer = new Adventurer({
@@ -47,33 +47,6 @@ export class CharacterSheetComponent {
   Alignment = Alignment;
   Background = Background;
 
-  stats: Stat[] = [
-    Stat.strength,
-    Stat.dexterity,
-    Stat.constitution,
-    Stat.intelligence,
-    Stat.wisdom,
-    Stat.charisma,
-  ];
-
-  skills: Skill[] = [
-    Skill.acrobatics,
-    Skill.animalHandling,
-    Skill.arcana,
-    Skill.athletics,
-    Skill.deception,
-    Skill.history,
-    Skill.insight,
-    Skill.intimidation,
-    Skill.investigation,
-    Skill.medicine,
-    Skill.nature,
-    Skill.perception,
-    Skill.performance,
-    Skill.persuasion,
-    Skill.religion,
-    Skill.sleightOfHand,
-    Skill.stealth,
-    Skill.survival,
-  ];
+  stats = stats;
+  skills = skills;
 }

@@ -1,1 +1,4 @@
+<div class="info">
+  {{ (changedDetected | async) ? "saving..." : "synced" }}
+</div>
 <app-character-sheet [adventurer]="adventurer"></app-character-sheet>
