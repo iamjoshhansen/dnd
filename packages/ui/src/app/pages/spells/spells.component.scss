@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
   grid-template-columns: 1fr 200px;
+  grid-template-rows: min-content 1fr;
   align-items: baseline;
   grid-template-areas:
     'title   search'
