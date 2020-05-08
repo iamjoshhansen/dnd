@@ -329,6 +329,7 @@ export interface AdventurerData {
   savingThrows: SavingThrowList;
   initiative: number;
   inspiration: number;
+  equipment: string;
 }
 
 function watcher(key: string, val: any) {
@@ -349,6 +350,7 @@ export class Adventurer {
   private stats: StatsInterface;
   private skills: SkillsInterface;
   private savingThrows: Partial<Record<Stat, boolean>> = {};
+  public equipment: string;
 
   constructor({
     clss,
@@ -371,6 +373,7 @@ export class Adventurer {
     savingThrows = [],
     initiative,
     inspiration,
+    equipment,
   }: Partial<AdventurerData>) {
     this.characterName = characterName;
     this.playerName = playerName;
@@ -383,6 +386,7 @@ export class Adventurer {
     this.background = background;
     this.initiative = initiative;
     this.inspiration = inspiration;
+    this.equipment = equipment;
 
     this.savingThrows = {
       [Stat.strength]: savingThrows.includes(Stat.strength),
@@ -434,6 +438,7 @@ export class Adventurer {
       savingThrows: Object.keys(this.savingThrows).map((x) => x as Stat),
       initiative: this.initiative,
       inspiration: this.inspiration,
+      equipment: this.equipment,
     };
 
     pruneObj(data);

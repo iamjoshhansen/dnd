@@ -1,4 +1,8 @@
 <div class="info">
   {{ (changedDetected | async) ? "saving..." : "synced" }}
 </div>
-<app-character-sheet [adventurer]="adventurer"></app-character-sheet>
+
+<div class="columns">
+  <app-character-sheet [adventurer]="adventurer"></app-character-sheet>
+  <pre><code>{{ adventurer | json }}</code></pre>
+</div>
