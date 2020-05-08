@@ -8,10 +8,12 @@ import { ConnectedService } from 'src/app/services/connected/connected.service';
 import {
   takeUntil,
   map,
-  distinctUntilChanged,
   filter,
   debounceTime,
+  tap,
+  distinctUntilChanged,
 } from 'rxjs/operators';
+import { objectDelta } from '@dnd/utilities';
 
 @Component({
   selector: 'app-player',
@@ -21,21 +23,28 @@ import {
 export class PlayerComponent implements OnInit, OnDestroy {
   adventurer = new Adventurer({});
 
+  public synced = false;
+  public loaded = false;
+
   public savedData = new BehaviorSubject<Partial<AdventurerData>>({});
   public currentData = new BehaviorSubject<Partial<AdventurerData>>({});
 
-  public changedDetected = combineLatest(this.savedData, this.currentData).pipe(
-    map(
-      ([saved, current]) => JSON.stringify(saved) !== JSON.stringify(current)
-    ),
-    distinctUntilChanged()
+  readonly delta = combineLatest(this.savedData, this.currentData).pipe(
+    map(([saved, current]) => objectDelta(saved, current)),
+    distinctUntilChanged((a, b) => JSON.stringify(a) == JSON.stringify(b))
   );
 
   private destroyed = new Subject<void>();
 
   private socket = this.connectedService.socket;
 
-  private id = '5eaf7d46e366b9c0a86767e6';
+  // newbie
+  private id = '5eb5b9014a88e449c7cbcae8';
+
+  // Kelryn
+  // private id = '5eaf7d46e366b9c0a86767e6';
+
+  // Dresdin
   // private id = '5eb17ae17bfc0652cbaca976';
 
   constructor(private connectedService: ConnectedService) {}
@@ -48,27 +57,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.getCharacter(this.id);
       });
 
-    this.changedDetected
+    this.delta
       .pipe(
         takeUntil(this.destroyed),
-        debounceTime(250),
-        filter((x) => x)
+        filter((x) => Object.keys(x).length > 0),
+        debounceTime(500)
+        // tap((delta) => console.log('filtered detla', delta))
       )
-      .subscribe(() => {
-        console.log('Change detected.. saving.');
-        this.save();
+      .subscribe((delta) => {
+        // console.log('Change detected.. saving.');
+        this.save(delta);
       });
 
     interval(200)
       .pipe(takeUntil(this.destroyed))
-      .subscribe(() => {
-        // const savedJSON = JSON.stringify(this.savedData);
-        // const currentJSON = JSON.stringify(this.adventurer);
-        // if (savedJSON !== currentJSON) {
-
-        // }
-        this.currentData.next(this.adventurer.toJSON());
-      });
+      .subscribe(() => this.currentData.next(this.adventurer.toJSON()));
   }
 
   ngOnDestroy() {
@@ -76,27 +79,30 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   claimSaved() {
-    this.savedData.next(this.adventurer.toJSON());
+    this.savedData.next(this.currentData.value);
+    this.synced = true;
+    console.log(`Saved`);
   }
 
   getCharacter(id: string) {
     this.socket.emit('get-character', id, (character: any) => {
       console.log(`Character recieved!`, character);
       this.adventurer = new Adventurer(character);
+      this.loaded = true;
       this.claimSaved();
     });
   }
 
-  save() {
+  save(delta) {
+    this.synced = false;
     this.socket.emit(
-      'save-character',
+      'update-character',
       {
         id: this.id,
-        data: this.adventurer.toJSON(),
+        delta,
       },
       () => {
-        this.savedData.next(this.currentData.value);
-        console.log(`Saved`);
+        this.claimSaved();
       }
     );
   }

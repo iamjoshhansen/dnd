@@ -434,8 +434,12 @@ export class Adventurer {
       race: this.race,
       subRace: this.subRace,
       stats: this.stats,
-      skills: Object.keys(this.skills).map((x) => x as Skill),
-      savingThrows: Object.keys(this.savingThrows).map((x) => x as Stat),
+      skills: Object.keys(this.skills)
+        .map((x) => x as Skill)
+        .sort(),
+      savingThrows: Object.keys(this.savingThrows)
+        .map((x) => x as Stat)
+        .sort(),
       initiative: this.initiative,
       inspiration: this.inspiration,
       equipment: this.equipment,
