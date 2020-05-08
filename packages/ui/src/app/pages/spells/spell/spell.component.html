@@ -24,7 +24,7 @@
       <dt>Classes</dt>
       <dd>
         <div *ngFor="let class of (spell | async).classes">
-          <a [routerLink]="['/class',class.name.toLowerCase()]">{{ class.name }}</a>
+          <a [routerLink]="['/class',class.toLowerCase()]">{{ class }}</a>
         </div>
       </dd>
     </dl>

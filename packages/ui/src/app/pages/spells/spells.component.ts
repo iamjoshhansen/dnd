@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DndService } from '../../dnd.service';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, filter } from 'rxjs/operators';
+import { SpellsService } from 'src/app/services/spells/spells.service';
+import { SpellListItemResponse } from 'src/app/interfaces/spell-response.interface';
 
 interface SpellsResult {
   index: string;
@@ -24,14 +25,32 @@ export class SpellsComponent implements OnInit {
     return this.searchSubject.value;
   }
 
-  private resultsSubject = new BehaviorSubject<SpellsResult[]>([]);
+  private selectedSubject = new BehaviorSubject<string>('');
+  readonly selected = this.selectedSubject.pipe(distinctUntilChanged());
+  readonly selectedSpell = this.selected.pipe(
+    filter((index) => !!index),
+    switchMap((spellIndex) => this.spellsService.getSpell(spellIndex))
+  );
+
+  private resultsSubject = new BehaviorSubject<SpellListItemResponse[]>([]);
   readonly results = this.resultsSubject.asObservable();
 
   readonly filteredResults = combineLatest(
     this.searchObserver,
     this.results
   ).pipe(
-    map(([search, results]: [string, SpellsResult[]]) => {
+    // map(([search, results]: [string, SpellListItemResponse[]]) => {
+    //   if (search.length === 0) {
+    //     return results;
+    //   }
+    //   return [
+    //     search,
+    //     results.filter((result) => {
+    //       return result.classes.includes('Wizard');
+    //     }),
+    //   ];
+    // }),
+    map(([search, results]: [string, SpellListItemResponse[]]) => {
       if (search.length === 0) {
         return results;
       }
@@ -44,11 +63,42 @@ export class SpellsComponent implements OnInit {
     })
   );
 
-  constructor(private dndService: DndService) {}
+  readonly levelGroups: Observable<
+    { level: number; spells: SpellListItemResponse[] }[]
+  > = this.filteredResults.pipe(
+    map((allSpells) => {
+      const levels: Record<number, SpellListItemResponse[]> = {};
+
+      allSpells.forEach((spell) => {
+        const level = spell.level;
+        if (!(level in levels)) {
+          levels[level] = [];
+        }
+        levels[level].push(spell);
+      });
+
+      const groups = [];
+      Object.keys(levels).forEach((level) => {
+        const spells = levels[level];
+        groups.push({
+          level,
+          spells,
+        });
+      });
+
+      return groups;
+    })
+  );
+
+  constructor(private spellsService: SpellsService) {}
 
   ngOnInit() {
-    this.dndService.getSpells().subscribe((spells) => {
-      this.resultsSubject.next(spells.results);
+    this.spellsService.getSpells().subscribe((spells) => {
+      this.resultsSubject.next(spells);
     });
+  }
+
+  select(index: string) {
+    this.selectedSubject.next(index);
   }
 }

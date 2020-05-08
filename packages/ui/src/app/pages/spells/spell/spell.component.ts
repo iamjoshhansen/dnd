@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { SpellResponse } from 'src/app/interfaces/spell-response.interface';
-import { DndService } from 'src/app/dnd.service';
-import { map, takeUntil, filter } from 'rxjs/operators';
+import { SpellDetailsResponse } from 'src/app/interfaces/spell-response.interface';
+import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { SpellsService } from 'src/app/services/spells/spells.service';
 
 @Component({
   selector: 'app-spell',
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./spell.component.scss'],
 })
 export class SpellComponent implements OnInit, OnDestroy {
-  private spellSubject = new BehaviorSubject<SpellResponse>(undefined);
+  private spellSubject = new BehaviorSubject<SpellDetailsResponse>(undefined);
   readonly spell = this.spellSubject.pipe(
     filter((x) => typeof x !== undefined)
   );
@@ -19,7 +19,7 @@ export class SpellComponent implements OnInit, OnDestroy {
   private destroyed = new Subject<void>();
 
   constructor(
-    private dndService: DndService,
+    private spellsService: SpellsService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -28,7 +28,7 @@ export class SpellComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed))
       .subscribe(async () => {
         const index = this.activatedRoute.snapshot.params.index;
-        this.dndService.getSpell(index).subscribe((spell) => {
+        this.spellsService.getSpell(index).subscribe((spell) => {
           this.spellSubject.next(spell);
         });
       });

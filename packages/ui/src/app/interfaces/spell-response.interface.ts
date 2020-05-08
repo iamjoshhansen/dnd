@@ -1,5 +1,4 @@
-export interface SpellResponse {
-  _id: string;
+export interface SpellDetailsResponse {
   index: string;
   name: string;
   desc: string[];
@@ -7,22 +6,26 @@ export interface SpellResponse {
   range: string;
   components: ('V' | 'S' | 'M')[];
   material: string;
-  ritual: false;
+  ritual: boolean;
   duration: string;
-  concentration: false;
+  concentration: boolean;
   casting_time: string;
   level: number;
-  school: {
-    name: string;
-    url: string;
-  };
-  classes: {
-    name: string;
-    url: string;
-  }[];
-  subclasses: {
-    name: string;
-    url: string;
-  }[];
-  url: string;
+  school: string;
+  classes: string[];
+}
+
+export interface SpellListItemResponse {
+  index: string;
+  name: string;
+  range: string;
+  components: ('V' | 'S' | 'M')[];
+  material: string;
+  ritual: boolean;
+  duration: string;
+  concentration: boolean;
+  casting_time: string;
+  level: number;
+  school: string;
+  classes: string[];
 }

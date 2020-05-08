@@ -1,0 +1,28 @@
+.spell {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-areas:
+    'name  name'
+    'stats desc';
+  gap: 1em 3em;
+}
+
+.stats {
+  grid-area: stats;
+}
+
+.desc {
+  grid-area: desc;
+}
+
+.name {
+  grid-area: name;
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+.description {
+  opacity: 0.75;
+  margin: 0 0 1em;
+}

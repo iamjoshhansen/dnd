@@ -14,6 +14,8 @@ import { CharacterSheetComponent } from './components/character-sheet/character-
 import { ModifierPipe } from './pipes/modifier/modifier.pipe';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { ActiveCircleComponent } from './components/active-circle/active-circle.component';
+import { SpellDetailsComponent } from './components/spell-details/spell-details.component';
 
 const config: SocketIoConfig = {
   url: `http://${window.location.hostname}:4145`,
@@ -30,6 +32,8 @@ const config: SocketIoConfig = {
     PlayerComponent,
     CharacterSheetComponent,
     ModifierPipe,
+    ActiveCircleComponent,
+    SpellDetailsComponent,
   ],
   imports: [
     BrowserModule,

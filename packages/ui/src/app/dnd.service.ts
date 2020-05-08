@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SpellResponse } from './interfaces/spell-response.interface';
+import { SpellDetailsResponse } from './interfaces/spell-response.interface';
 
 const api = `http://www.dnd5eapi.co/api`;
 
@@ -22,6 +22,6 @@ export class DndService {
   }
 
   getSpell(index: string) {
-    return this.http.get<SpellResponse>(`${api}/spells/${index}`);
+    return this.http.get<SpellDetailsResponse>(`${api}/spells/${index}`);
   }
 }

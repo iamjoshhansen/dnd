@@ -1,0 +1,44 @@
+<app-loading *ngIf="!spell"></app-loading>
+<div *ngIf="!!spell" class="spell">
+  <h3 class="name">{{ spell.name }}</h3>
+
+  <section class="stats">
+    <h3>Stats</h3>
+    <dl>
+      <dt>Level</dt>
+      <dd>{{ spell.level }}</dd>
+      <dt>Range</dt>
+      <dd>{{ spell.range }}</dd>
+      <dt>Casting Time</dt>
+      <dd>{{ spell.casting_time }}</dd>
+      <dt>Duration</dt>
+      <dd>{{ spell.duration }}</dd>
+      <dt>Concentration</dt>
+      <dd>{{ spell.concentration ? 'no' : 'yes' }}</dd>
+      <dt>Components</dt>
+      <dd><span *ngFor="let component of spell.components">{{ component }} </span></dd>
+      <dt>Material</dt>
+      <dd>{{ spell.material || '(none)' }}</dd>
+      <dt>Ritual</dt>
+      <dd>{{ spell.ritual ? 'no' : 'yes' }}</dd>
+      <dt>Classes</dt>
+      <dd>
+        <div *ngFor="let class of spell.classes">
+          <a [routerLink]="['/class',class.toLowerCase()]">{{ class }}</a>
+        </div>
+      </dd>
+    </dl>
+  </section>
+
+  <section class="desc">
+    <div *ngIf="spell.desc && spell.desc.length > 0">
+      <h3>Description</h3>
+      <p class="description" *ngFor="let desc of spell.desc">{{ desc }}</p>
+    </div>
+
+    <div *ngIf="spell.higher_level && spell.higher_level.length > 0">
+      <h3>Higher Level</h3>
+      <p class="description" *ngFor="let desc of spell.higher_level">{{ desc }}</p>
+    </div>
+  </section>
+</div>

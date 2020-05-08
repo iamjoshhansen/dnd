@@ -4,8 +4,34 @@
   <input placeholder="search" [(ngModel)]="search" />
 </div>
 
-<ul class="grid-list">
-  <li *ngFor="let item of filteredResults | async" class="grid-list--item">
-    <a [routerLink]="['/spell',item.index]">{{ item.name }}</a>
-  </li>
-</ul>
+<div class="results">
+  <table>
+    <tbody *ngFor="let group of levelGroups | async">
+      <tr>
+        <th>
+          <h3>Level {{ group.level }}</h3>
+        </th>
+        <th>Range</th>
+        <th>Casting Time</th>
+        <th>Concentration</th>
+        <th>Ritual</th>
+      </tr>
+      <tr *ngFor="let spell of group.spells" (click)="select(spell.index)"
+        [class.selected]="(selected | async) === spell.index">
+        <td>{{ spell.name }}</td>
+        <td>{{ spell.range }}</td>
+        <td>{{ spell.casting_time }}</td>
+        <td>
+          <app-active-circle [active]="spell.concentration"></app-active-circle>
+        </td>
+        <td>
+          <app-active-circle [active]="spell.ritual"></app-active-circle>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="details">
+  <app-spell-details [spell]="selectedSpell | async"></app-spell-details>
+</div>

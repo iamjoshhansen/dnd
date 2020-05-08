@@ -1,0 +1,19 @@
+:host {
+  display: inline-block;
+}
+
+.circle {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0.25em;
+  border-radius: 50%;
+  background: var(--mostly-background);
+  border: solid 0.05em var(--faint-border);
+  box-sizing: border-box;
+  transform: translateY(0.1em);
+
+  &--active {
+    background: var(--checkbox-selected);
+  }
+}
