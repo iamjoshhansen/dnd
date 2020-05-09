@@ -1,14 +1,21 @@
 <div class="info">
-  {{ loaded ? (synced ? "synced" : "saving...") : "loading..." }}
+  <span [class]="'cloud cloud--'+state">
+    <i class="fas fa-cloud-download-alt" *ngIf="state === 'loading'"></i>
+    <i class="fas fa-cloud-upload-alt" *ngIf="state === 'saving'"></i>
+    <i class="fas fa-cloud" *ngIf="state === 'waiting' || state === 'synced'"></i>
+  </span>
 </div>
-
+<app-character-sheet [adventurer]="adventurer"></app-character-sheet>
+<!--
 <div class="columns">
-  <app-character-sheet [adventurer]="adventurer"></app-character-sheet>
   <div>
     <h3>Adventurer</h3>
     <pre><code>{{ adventurer | json }}</code></pre>
 
+    <h3>Saved</h3>
+    <pre><code>{{ savedData | json }}</code></pre>
+
     <h3>Delta</h3>
-    <pre><code>{{ delta | async | json }}</code></pre>
+    <pre><code>{{ delta | json }}</code></pre>
   </div>
-</div>
+</div> -->

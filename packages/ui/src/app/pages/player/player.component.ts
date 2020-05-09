@@ -12,6 +12,7 @@ import {
   debounceTime,
   tap,
   distinctUntilChanged,
+  skipWhile,
 } from 'rxjs/operators';
 import { objectDelta, type } from '@dnd/utilities';
 
@@ -21,21 +22,70 @@ import { objectDelta, type } from '@dnd/utilities';
   styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  adventurer = new Adventurer({});
+  public adventurer = new Adventurer({});
 
-  public synced = false;
   public loaded = false;
+  public saving = false;
 
-  public savedData = new BehaviorSubject<Partial<AdventurerData>>({});
-  public currentData = new BehaviorSubject<Partial<AdventurerData>>({});
+  private lastDeltaString: string;
+  public savedData: Partial<AdventurerData> = {};
+  get delta() {
+    const localDelta = objectDelta(this.savedData, this.adventurer.toJSON());
 
-  readonly delta = combineLatest(this.savedData, this.currentData).pipe(
-    map(([saved, current]) => objectDelta(saved, current)),
-    distinctUntilChanged((a, b) => JSON.stringify(a) == JSON.stringify(b))
-  );
+    const localDeltaString = JSON.stringify(localDelta);
+    if (localDeltaString !== this.lastDeltaString) {
+      this.lastChangeDate = new Date();
+    }
+    this.lastDeltaString = localDeltaString;
+    return localDelta;
+  }
+
+  get hasDelta() {
+    return Object.keys(this.delta).length > 0;
+  }
+
+  private lastChangeDate = new Date();
+
+  get lastChangeIsOldEnough() {
+    return this.timeSinceLastChange > 1000;
+  }
+
+  get timeSinceLastChange() {
+    return new Date().getTime() - this.lastChangeDate.getTime();
+  }
+
+  get canSaveNow() {
+    return (
+      this.loaded && !this.saving && this.hasDelta && this.lastChangeIsOldEnough
+    );
+  }
+
+  get willSaveSoon() {
+    return (
+      this.loaded &&
+      !this.saving &&
+      this.hasDelta &&
+      !this.lastChangeIsOldEnough
+    );
+  }
+
+  get state(): string {
+    if (!this.loaded) {
+      return 'loading';
+    }
+
+    if (this.saving) {
+      return 'saving';
+    }
+
+    if (this.willSaveSoon) {
+      return 'waiting';
+    }
+
+    return 'synced';
+  }
 
   private destroyed = new Subject<void>();
-
   private socket = this.connectedService.socket;
 
   // newbie
@@ -57,44 +107,31 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.getCharacter(this.id);
       });
 
-    this.delta
-      .pipe(
-        takeUntil(this.destroyed),
-        filter((x) => Object.keys(x).length > 0),
-        debounceTime(500)
-        // tap((delta) => console.log('filtered detla', delta))
-      )
-      .subscribe((delta) => {
-        // console.log('Change detected.. saving.');
-        this.save(delta);
-      });
-
-    interval(200)
+    interval(500)
       .pipe(takeUntil(this.destroyed))
-      .subscribe(() => this.currentData.next(this.adventurer.toJSON()));
+      .subscribe(() => {
+        if (this.canSaveNow) {
+          this.save(this.delta);
+        }
+      });
   }
 
   ngOnDestroy() {
     this.destroyed.next();
   }
 
-  claimSaved() {
-    this.savedData.next(this.currentData.value);
-    this.synced = true;
-    console.log(`Saved`);
-  }
-
   getCharacter(id: string) {
     this.socket.emit('get-character', id, (character: any) => {
       console.log(`Character recieved!`, character);
       this.adventurer = new Adventurer(character);
+      this.savedData = this.adventurer.toJSON();
       this.loaded = true;
-      this.claimSaved();
     });
   }
 
   save(delta) {
-    this.synced = false;
+    this.saving = true;
+    this.savedData = this.adventurer.toJSON();
     this.socket.emit(
       'update-character',
       {
@@ -102,7 +139,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
         delta,
       },
       () => {
-        this.claimSaved();
+        console.log(`Saved. Data updated`);
+        this.saving = false;
       }
     );
   }

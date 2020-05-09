@@ -61,7 +61,6 @@ async function main() {
         cb: Function
       ) => {
         const op = deltaToMongoOp(delta);
-        console.log(`Saving ${id}`, delta, op);
         await charactersCollection.findOneAndUpdate(
           {
             _id: new ObjectId(id),
