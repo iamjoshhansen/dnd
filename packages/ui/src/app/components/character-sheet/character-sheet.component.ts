@@ -41,6 +41,8 @@ import {
 export class CharacterSheetComponent {
   @Input() adventurer: Adventurer = new Adventurer({});
 
+  showDieRoll = false;
+
   Stat = Stat;
   Race = Race;
   SubRace = SubRace;

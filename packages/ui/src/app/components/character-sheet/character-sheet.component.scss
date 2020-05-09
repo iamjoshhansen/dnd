@@ -115,6 +115,19 @@
   }
 }
 
+.die-roll {
+  display: none;
+  position: absolute;
+  right: 100%;
+  width: 2em;
+  background: var(--mostly-background);
+  border: solid 1px var(--faint-border);
+
+  &--show {
+    display: block;
+  }
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -294,6 +307,7 @@ select {
     grid-template-rows: min-content 1fr min-content;
     align-items: center;
     border-radius: 5px;
+    position: relative;
 
     .stat-label {
       padding: 0.25em;

@@ -495,8 +495,8 @@ export class Adventurer {
     return this.stats[stat];
   }
 
-  setBaseStat(stat: Stat, val: number) {
-    this.stats[stat] = val;
+  setBaseStat(stat: Stat, val: number | string) {
+    this.stats[stat] = typeof val === 'string' ? parseInt(val, 10) : val;
   }
 
   getStat(stat: Stat): number {

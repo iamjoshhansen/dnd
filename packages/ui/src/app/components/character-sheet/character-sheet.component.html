@@ -144,7 +144,7 @@
             </li>
           </ul>
         </div>
-        <div class="stat-base">
+        <div class="stat-base" (click)="showDieRoll = !showDieRoll">
           {{ adventurer.getStat(stat) }}
 
           <ul class="explanation tooltip">
@@ -156,6 +156,9 @@
             </li>
           </ul>
         </div>
+
+        <input type="number" class="input die-roll" [class.die-roll--show]="showDieRoll"
+          [value]="adventurer.getBaseStat(stat)" (keyup)="adventurer.setBaseStat(stat, $event.target.value || 0)" />
       </li>
     </ul>
     <div class="inspiration">
