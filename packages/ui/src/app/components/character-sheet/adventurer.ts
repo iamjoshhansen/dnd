@@ -331,10 +331,13 @@ export interface AdventurerData {
   initiative: number;
   inspiration: number;
   equipment: string;
-}
-
-function watcher(key: string, val: any) {
-  console.log(`Watcher saw that ${key} changed to ${val}`);
+  personalityTraits: string;
+  ideals: string;
+  bonds: string;
+  flaws: string;
+  proficienciesAndLanguages: string;
+  attacksSpellcasting: string;
+  featuresAndTraits: string;
 }
 
 export class Adventurer {
@@ -352,6 +355,13 @@ export class Adventurer {
   private skills: SkillsInterface;
   private savingThrows: Partial<Record<Stat, boolean>> = {};
   public equipment: string;
+  public personalityTraits: string;
+  public ideals: string;
+  public bonds: string;
+  public flaws: string;
+  public proficienciesAndLanguages: string;
+  public attacksSpellcasting: string;
+  public featuresAndTraits: string;
 
   constructor({
     clss,
@@ -375,6 +385,13 @@ export class Adventurer {
     initiative,
     inspiration,
     equipment,
+    personalityTraits,
+    ideals,
+    bonds,
+    flaws,
+    proficienciesAndLanguages,
+    attacksSpellcasting,
+    featuresAndTraits,
   }: Partial<AdventurerData>) {
     this.characterName = characterName;
     this.playerName = playerName;
@@ -388,6 +405,13 @@ export class Adventurer {
     this.initiative = initiative;
     this.inspiration = inspiration;
     this.equipment = equipment;
+    this.personalityTraits = personalityTraits;
+    this.ideals = ideals;
+    this.bonds = bonds;
+    this.flaws = flaws;
+    this.proficienciesAndLanguages = proficienciesAndLanguages;
+    this.attacksSpellcasting = attacksSpellcasting;
+    this.featuresAndTraits = featuresAndTraits;
 
     this.savingThrows = {
       [Stat.strength]: savingThrows.includes(Stat.strength),
@@ -444,6 +468,13 @@ export class Adventurer {
       initiative: this.initiative,
       inspiration: this.inspiration,
       equipment: this.equipment,
+      personalityTraits: this.personalityTraits,
+      ideals: this.ideals,
+      bonds: this.bonds,
+      flaws: this.flaws,
+      proficienciesAndLanguages: this.proficienciesAndLanguages,
+      attacksSpellcasting: this.attacksSpellcasting,
+      featuresAndTraits: this.featuresAndTraits,
     });
 
     pruneObj(data);
