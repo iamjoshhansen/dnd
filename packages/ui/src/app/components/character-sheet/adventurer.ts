@@ -1,4 +1,5 @@
 import { pruneObj, keepTrue } from 'src/app/utility/prune-obj';
+import { copy } from '@dnd/utilities/dist';
 
 const xpLevelValues = [
   0,
@@ -424,7 +425,7 @@ export class Adventurer {
   }
 
   toJSON(): Partial<AdventurerData> {
-    const data: AdventurerData = {
+    const data: AdventurerData = copy({
       characterName: this.characterName,
       playerName: this.playerName,
       alignment: this.alignment,
@@ -443,7 +444,7 @@ export class Adventurer {
       initiative: this.initiative,
       inspiration: this.inspiration,
       equipment: this.equipment,
-    };
+    });
 
     pruneObj(data);
 

@@ -5,6 +5,7 @@ import {
   union,
   applyDelta,
   deltaToMongoOp,
+  type,
 } from '../../src/object-delta';
 
 describe('objectDelta', () => {
@@ -281,5 +282,51 @@ describe('deltaToMongoOp', () => {
       $set: { c: 'Charlie' },
       $unset: { a: '' },
     });
+  });
+});
+
+describe('type', () => {
+  it('object', () => {
+    expect(type({})).to.eq('object');
+  });
+
+  it('array', () => {
+    expect(type([])).to.eq('array');
+  });
+
+  it('undefined', () => {
+    expect(type(undefined)).to.eq('undefined');
+  });
+
+  it('Date', () => {
+    expect(type(new Date())).to.eq('object');
+  });
+
+  it('null', () => {
+    expect(type(null)).to.eq('null');
+  });
+
+  it('number', () => {
+    expect(type(42)).to.eq('number');
+  });
+
+  it('number (0)', () => {
+    expect(type(0)).to.eq('number');
+  });
+
+  it('string', () => {
+    expect(type('42')).to.eq('string');
+  });
+
+  it('string (empty)', () => {
+    expect(type('')).to.eq('string');
+  });
+
+  it('boolean (true)', () => {
+    expect(type(true)).to.eq('boolean');
+  });
+
+  it('boolean (false)', () => {
+    expect(type(false)).to.eq('boolean');
   });
 });

@@ -13,7 +13,7 @@ import {
   tap,
   distinctUntilChanged,
 } from 'rxjs/operators';
-import { objectDelta } from '@dnd/utilities';
+import { objectDelta, type } from '@dnd/utilities';
 
 @Component({
   selector: 'app-player',

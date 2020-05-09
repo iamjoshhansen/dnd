@@ -4,6 +4,10 @@ export interface ObjectDelta {
   d?: string[];
 }
 
+export function copy<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 export function objectDelta(
   a: Record<string, any>,
   b: Record<string, any>
@@ -16,7 +20,7 @@ export function objectDelta(
   // Declare Creations
   const cKeys = difference(bKeys, aKeys);
   const c: Record<string, any> = {};
-  cKeys.forEach((k) => (c[k] = b[k]));
+  cKeys.forEach((k) => (c[k] = copy(b[k])));
   if (cKeys.length > 0) {
     ret.c = c;
   }
@@ -28,15 +32,17 @@ export function objectDelta(
     const aVal = a[k];
     const bVal = b[k];
     if (type(aVal) !== type(bVal)) {
-      u[k] = bVal;
+      Object.keys(bVal).forEach((key) => {
+        u[k] = copy(bVal[key]);
+      });
     } else {
       if (type(aVal) === 'object' || type(aVal) === 'array') {
         if (JSON.stringify(aVal) !== JSON.stringify(bVal)) {
-          u[k] = bVal;
+          u[k] = copy(bVal);
         }
       } else {
         if (aVal !== bVal) {
-          u[k] = bVal;
+          u[k] = copy(bVal);
         }
       }
     }
@@ -52,7 +58,7 @@ export function objectDelta(
     ret.d = d;
   }
 
-  return ret;
+  return copy(ret);
 }
 
 export function type(x: any): string {
