@@ -162,12 +162,18 @@
       </li>
     </ul>
     <div class="inspiration">
-      <input class="input" type="number" [(ngModel)]="adventurer.inspiration" />
-      inspiration
+      <div class="side-label">
+        <div class="side-label__number big-number">
+          <input class="input" type="number" [(ngModel)]="adventurer.inspiration" />
+        </div>
+        <div class="side-label__label">Inspiration</div>
+      </div>
     </div>
     <div class="proficiency">
-      +{{ adventurer.proficiencyBonus }}
-      Proficiency Bonus
+      <div class="side-label">
+        <div class="side-label__number big-number">{{ adventurer.proficiencyBonus | modifier }}</div>
+        <div class="side-label__label">Proficiency Bonus</div>
+      </div>
     </div>
 
     <div class="saving labeled-section">
@@ -219,7 +225,12 @@
       </ul>
     </div>
   </section>
-  <section class="passive">passive</section>
+  <section class="passive">
+    <div class="side-label">
+      <div class="side-label__number big-number">{{ adventurer.passivePerception }}</div>
+      <div class="side-label__label">Passive Perception</div>
+    </div>
+  </section>
   <section class="other labeled-section">
     <h4 class="section-label">Other Proficiencies &amp; Languages</h4>
     <textarea class="section-text" [(ngModel)]="adventurer.proficienciesAndLanguages"></textarea>
@@ -262,22 +273,22 @@
   <section class="personality">
     <section class="labeled-section">
       <h4 class="section-label">Personality Traits</h4>
-      <textarea class="section-text" [(ngModel)]="adventurer.personalityTraits"></textarea>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.personalityTraits"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Ideals</h4>
-      <textarea class="section-text" [(ngModel)]="adventurer.ideals"></textarea>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.ideals"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Bonds</h4>
-      <textarea class="section-text" [(ngModel)]="adventurer.bonds"></textarea>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.bonds"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Flaws</h4>
-      <textarea class="section-text" [(ngModel)]="adventurer.flaws"></textarea>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.flaws"></textarea>
     </section>
   </section>
 

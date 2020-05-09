@@ -494,6 +494,10 @@ export class Adventurer {
     return this.subRaceOptions.length > 0;
   }
 
+  get passivePerception(): number {
+    return 10 + this.statModifier(Stat.dexterity);
+  }
+
   get levelExplanation(): string {
     if (this.level === 20) {
       return `You maxed out at level 20 with ${
