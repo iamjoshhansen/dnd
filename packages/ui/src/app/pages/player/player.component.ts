@@ -88,11 +88,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private destroyed = new Subject<void>();
   private socket = this.connectedService.socket;
 
-  // newbie
-  private id = '5eb5b9014a88e449c7cbcae8';
+  // Beatle!
+  // private id = '5eb5b9014a88e449c7cbcae8';
 
   // Kelryn
-  // private id = '5eaf7d46e366b9c0a86767e6';
+  private id = '5eaf7d46e366b9c0a86767e6';
 
   // Dresdin
   // private id = '5eb17ae17bfc0652cbaca976';
