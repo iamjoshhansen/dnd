@@ -4,7 +4,8 @@ import { ObjectId } from 'mongodb';
 import * as express from 'express';
 import * as cors from 'cors';
 import { Request, Response } from 'express';
-import { COLLECTION_SPELLS, COLLECTION_CHARACTERS } from '@dnd/env/dist';
+import { COLLECTION_SPELLS, COLLECTION_CHARACTERS } from '@dnd/env';
+import { ObjectDelta, deltaToMongoOp } from '@dnd/utilities';
 
 interface Spell {
   _id: ObjectId;
@@ -54,14 +55,17 @@ async function main() {
     });
 
     client.on(
-      'save-character',
-      async ({ id, data }: { id: string; data: any }, cb: Function) => {
-        console.log(`Saving ${id}`, data);
-        await charactersCollection.findOneAndReplace(
+      'update-character',
+      async (
+        { id, delta }: { id: string; delta: ObjectDelta },
+        cb: Function
+      ) => {
+        const op = deltaToMongoOp(delta);
+        await charactersCollection.findOneAndUpdate(
           {
             _id: new ObjectId(id),
           },
-          data
+          op
         );
         cb();
       }

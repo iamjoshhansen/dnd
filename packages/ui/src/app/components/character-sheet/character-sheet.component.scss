@@ -1,10 +1,12 @@
+$mobile: 768px;
+
 :host {
   display: grid;
   margin: 0 auto;
   grid-template-rows: min-content 1fr;
   gap: 1em;
 
-  @media screen {
+  @media screen and (min-width: $mobile) {
     min-width: 748px;
     max-width: 1004px;
   }
@@ -15,19 +17,42 @@
 }
 
 .header {
-  display: flex;
-  align-items: flex-start;
+  // display: none;
+
+  &>* {
+    margin-bottom: 1em;
+  }
+
+  @media (min-width: $mobile) {
+    display: flex;
+    align-items: flex-start;
+
+    &>* {
+      margin-bottom: 0;
+    }
+  }
 
   .header-1 {
-    display: grid;
-    grid-template-columns: 50px 1fr 20px;
-    grid-template-rows: 60px min-content minmax(20px, 1fr);
-    min-width: 300px;
+    &>* {
+      margin-bottom: 1em;
+    }
 
-    grid-template-areas:
-      ". .     ."
-      ". input ."
-      ". .     .";
+    @media (min-width: $mobile) {
+      display: grid;
+      grid-template-columns: 50px 1fr 20px;
+      grid-template-rows: 60px min-content minmax(20px, 1fr);
+      min-width: 300px;
+
+      grid-template-areas:
+        ". .     ."
+        ". input ."
+        ". .     .";
+
+      &>* {
+        margin-bottom: 0;
+      }
+    }
+
 
     // &>* {
     //   box-shadow: inset 0 0 10px #f00;
@@ -39,9 +64,19 @@
   }
 
   .header-2 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1em 0;
+    &>* {
+      margin-bottom: 1em;
+    }
+
+    @media (min-width: $mobile) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1em 0;
+
+      &>* {
+        margin-bottom: 0;
+      }
+    }
 
     // &>* {
     //   box-shadow: inset 0 0 10px #090;
@@ -115,6 +150,19 @@
   }
 }
 
+.die-roll {
+  display: none;
+  position: absolute;
+  right: 100%;
+  width: 2em;
+  background: var(--mostly-background);
+  border: solid 1px var(--faint-border);
+
+  &--show {
+    display: block;
+  }
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -128,24 +176,34 @@ select {
   resize: none;
   border-radius: 0;
   font-size: 0.75em;
+  min-height: 2em;
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0.5em var(--link-focus-outline);
+  }
 }
 
 .adventure-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 10fr 8fr 1fr 6fr;
-  gap: 10px;
-  grid-template-areas:
-    "skills battle    personality"
-    "skills attacks   features"
-    "wisdom equipment features"
-    "other  equipment features";
-  // box-shadow: inset 0 0 10px #fff;
+  &>* {
+    margin-bottom: 1em;
+  }
 
-  // &>* {
-  //   border: solid 1px var(--faint-border);
-  //   padding: 10px;
-  // }
+  @media (min-width: $mobile) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    // grid-template-rows: 10fr 8fr 1fr 6fr;
+    gap: 10px;
+    grid-template-areas:
+      "skills battle    personality"
+      "skills attacks   equipment"
+      "wisdom features  equipment"
+      "other  features  equipment";
+
+    &>* {
+      margin-bottom: 0;
+    }
+  }
 
   .skills-section {
     grid-area: skills;
@@ -294,6 +352,7 @@ select {
     grid-template-rows: min-content 1fr min-content;
     align-items: center;
     border-radius: 5px;
+    position: relative;
 
     .stat-label {
       padding: 0.25em;
@@ -430,9 +489,9 @@ select {
 .labeled-section {
   border: solid 1px var(--faint-border);
   border-radius: 5px;
-  padding-top: 0.5em;
+  // padding-top: 0.5em;
   display: grid;
-  gap: 0.25em;
+  // gap: 0.25em;
   grid-template-rows: minmax(1em, 1fr) min-content;
   grid-template-areas:
     '.'
@@ -446,6 +505,51 @@ select {
     font-size: 0.5em;
     padding: 0.5em;
   }
+
+  .section-text {
+    border-radius: 4px;
+    margin-bottom: calc(-1.75em - 1px);
+    padding-bottom: 1.75em;
+    background: none;
+    min-height: 15em;
+
+    &--short {
+      min-height: 2em;
+    }
+  }
+}
+
+.side-label {
+  display: flex;
+  align-items: center;
+
+  &__number {
+    border: solid 1px var(--faint-border);
+    padding: 0.5em;
+    width: 2em;
+    position: relative;
+    min-height: 1em;
+
+    input {
+      font-size: inherit;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.5em;
+    }
+  }
+
+  &__label {
+    text-align: center;
+    border: solid 1px var(--faint-border);
+    border-left: none;
+    padding: 0.75em 0.5em;
+    width: 100%;
+    font-size: 0.75em;
+    color: var(--dim-color);
+  }
 }
 
 .centered,
@@ -457,5 +561,6 @@ select {
 
 .big-number {
   font-size: 1.5em;
-  padding: 0 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }

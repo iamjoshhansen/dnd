@@ -121,7 +121,7 @@
     <div class="input-set">
       <label class="input-label">
         <span class="text-label">Experience Points</span>
-        <input [(ngModel)]="adventurer.xp" class="input text-input" type="number" min="0" />
+        <input [(ngModel)]="adventurer.xp" class="input text-input" type="number" inputmode="tel" min="0" />
       </label>
     </div>
   </div>
@@ -144,7 +144,7 @@
             </li>
           </ul>
         </div>
-        <div class="stat-base">
+        <div class="stat-base" (click)="showDieRoll = !showDieRoll">
           {{ adventurer.getStat(stat) }}
 
           <ul class="explanation tooltip">
@@ -156,15 +156,25 @@
             </li>
           </ul>
         </div>
+
+        <input type="number" inputmode="tel" min="4" max="18" class="input die-roll"
+          [class.die-roll--show]="showDieRoll" [value]="adventurer.getBaseStat(stat)"
+          (keyup)="adventurer.setBaseStat(stat, $event.target.value || 0)" />
       </li>
     </ul>
     <div class="inspiration">
-      <input class="input" type="number" [(ngModel)]="adventurer.inspiration" />
-      inspiration
+      <div class="side-label">
+        <div class="side-label__number big-number">
+          <input class="input" type="number" inputmode="tel" [(ngModel)]="adventurer.inspiration" />
+        </div>
+        <div class="side-label__label">Inspiration</div>
+      </div>
     </div>
     <div class="proficiency">
-      +{{ adventurer.proficiencyBonus }}
-      Proficiency Bonus
+      <div class="side-label">
+        <div class="side-label__number big-number">{{ adventurer.proficiencyBonus | modifier }}</div>
+        <div class="side-label__label">Proficiency Bonus</div>
+      </div>
     </div>
 
     <div class="saving labeled-section">
@@ -216,9 +226,15 @@
       </ul>
     </div>
   </section>
-  <section class="passive">passive</section>
+  <section class="passive">
+    <div class="side-label">
+      <div class="side-label__number big-number">{{ adventurer.passivePerception }}</div>
+      <div class="side-label__label">Passive Perception</div>
+    </div>
+  </section>
   <section class="other labeled-section">
     <h4 class="section-label">Other Proficiencies &amp; Languages</h4>
+    <textarea class="section-text" [(ngModel)]="adventurer.proficienciesAndLanguages"></textarea>
   </section>
 
   <section class="battle">
@@ -228,7 +244,7 @@
     </div>
     <div class="labeled-section battle--in">
       <h4 class="section-label">Initiative</h4>
-      <input class="input big-number" type="number" [(ngModel)]="adventurer.initiative" />
+      <input class="input big-number" type="number" inputmode="tel" [(ngModel)]="adventurer.initiative" />
     </div>
     <div class="labeled-section battle--sp">
       <h4 class="section-label">Speed</h4>
@@ -258,26 +274,32 @@
   <section class="personality">
     <section class="labeled-section">
       <h4 class="section-label">Personality Traits</h4>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.personalityTraits"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Ideals</h4>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.ideals"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Bonds</h4>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.bonds"></textarea>
     </section>
 
     <section class="labeled-section">
       <h4 class="section-label">Flaws</h4>
+      <textarea class="section-text section-text--short" [(ngModel)]="adventurer.flaws"></textarea>
     </section>
   </section>
 
   <section class="attacks labeled-section">
     <h4 class="section-label">Attacks &amp; Spellcasting</h4>
+    <textarea class="section-text" [(ngModel)]="adventurer.attacksSpellcasting"></textarea>
   </section>
 
   <section class="features labeled-section">
     <h4 class="section-label">Features &amp; Traits</h4>
+    <textarea class="section-text" [(ngModel)]="adventurer.featuresAndTraits"></textarea>
   </section>
 </main>

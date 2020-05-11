@@ -8,10 +8,13 @@ import { ConnectedService } from 'src/app/services/connected/connected.service';
 import {
   takeUntil,
   map,
-  distinctUntilChanged,
   filter,
   debounceTime,
+  tap,
+  distinctUntilChanged,
+  skipWhile,
 } from 'rxjs/operators';
+import { objectDelta, type } from '@dnd/utilities';
 
 @Component({
   selector: 'app-player',
@@ -19,23 +22,79 @@ import {
   styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  adventurer = new Adventurer({});
+  public adventurer = new Adventurer({});
 
-  public savedData = new BehaviorSubject<Partial<AdventurerData>>({});
-  public currentData = new BehaviorSubject<Partial<AdventurerData>>({});
+  public loaded = false;
+  public saving = false;
 
-  public changedDetected = combineLatest(this.savedData, this.currentData).pipe(
-    map(
-      ([saved, current]) => JSON.stringify(saved) !== JSON.stringify(current)
-    ),
-    distinctUntilChanged()
-  );
+  private lastDeltaString: string;
+  public savedData: Partial<AdventurerData> = {};
+  get delta() {
+    const localDelta = objectDelta(this.savedData, this.adventurer.toJSON());
+
+    const localDeltaString = JSON.stringify(localDelta);
+    if (localDeltaString !== this.lastDeltaString) {
+      this.lastChangeDate = new Date();
+    }
+    this.lastDeltaString = localDeltaString;
+    return localDelta;
+  }
+
+  get hasDelta() {
+    return Object.keys(this.delta).length > 0;
+  }
+
+  private lastChangeDate = new Date();
+
+  get lastChangeIsOldEnough() {
+    return this.timeSinceLastChange > 1000;
+  }
+
+  get timeSinceLastChange() {
+    return new Date().getTime() - this.lastChangeDate.getTime();
+  }
+
+  get canSaveNow() {
+    return (
+      this.loaded && !this.saving && this.hasDelta && this.lastChangeIsOldEnough
+    );
+  }
+
+  get willSaveSoon() {
+    return (
+      this.loaded &&
+      !this.saving &&
+      this.hasDelta &&
+      !this.lastChangeIsOldEnough
+    );
+  }
+
+  get state(): string {
+    if (!this.loaded) {
+      return 'loading';
+    }
+
+    if (this.saving) {
+      return 'saving';
+    }
+
+    if (this.willSaveSoon) {
+      return 'waiting';
+    }
+
+    return 'synced';
+  }
 
   private destroyed = new Subject<void>();
-
   private socket = this.connectedService.socket;
 
+  // Beatle!
+  // private id = '5eb5b9014a88e449c7cbcae8';
+
+  // Kelryn
   private id = '5eaf7d46e366b9c0a86767e6';
+
+  // Dresdin
   // private id = '5eb17ae17bfc0652cbaca976';
 
   constructor(private connectedService: ConnectedService) {}
@@ -48,26 +107,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.getCharacter(this.id);
       });
 
-    this.changedDetected
-      .pipe(
-        takeUntil(this.destroyed),
-        debounceTime(250),
-        filter((x) => x)
-      )
-      .subscribe(() => {
-        console.log('Change detected.. saving.');
-        this.save();
-      });
-
-    interval(200)
+    interval(500)
       .pipe(takeUntil(this.destroyed))
       .subscribe(() => {
-        // const savedJSON = JSON.stringify(this.savedData);
-        // const currentJSON = JSON.stringify(this.adventurer);
-        // if (savedJSON !== currentJSON) {
-
-        // }
-        this.currentData.next(this.adventurer.toJSON());
+        if (this.canSaveNow) {
+          this.save(this.delta);
+        }
       });
   }
 
@@ -75,28 +120,27 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.destroyed.next();
   }
 
-  claimSaved() {
-    this.savedData.next(this.adventurer.toJSON());
-  }
-
   getCharacter(id: string) {
     this.socket.emit('get-character', id, (character: any) => {
       console.log(`Character recieved!`, character);
       this.adventurer = new Adventurer(character);
-      this.claimSaved();
+      this.savedData = this.adventurer.toJSON();
+      this.loaded = true;
     });
   }
 
-  save() {
+  save(delta) {
+    this.saving = true;
+    this.savedData = this.adventurer.toJSON();
     this.socket.emit(
-      'save-character',
+      'update-character',
       {
         id: this.id,
-        data: this.adventurer.toJSON(),
+        delta,
       },
       () => {
-        this.savedData.next(this.currentData.value);
-        console.log(`Saved`);
+        console.log(`Saved. Data updated`);
+        this.saving = false;
       }
     );
   }

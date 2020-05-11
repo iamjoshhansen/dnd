@@ -1,0 +1,36 @@
+{
+  "name": "@dnd/utilities",
+  "version": "1.0.0",
+  "description": "Shared utilities",
+  "main": "./dist",
+  "private": true,
+  "scripts": {
+    "build:prod": "npm run build",
+    "build:watch": "tsc -w",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "prebuild": "cti create ./src",
+    "clean": "rm -r ./dist && rm -r ./node_modules",
+    "test:watch": "tsc-watch --onSuccess \"npm test\"",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "keywords": [
+    "DnD"
+  ],
+  "author": "Joshua Hansen <josh@iamjoshhansen.com>",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2",
+    "source-map-support": "^0.5.19"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.4",
+    "create-ts-index": "^1.13.2",
+    "ts-node": "^8.10.1",
+    "tsc-watch": "^4.2.3",
+    "typescript": "^3.8.3"
+  }
+}
