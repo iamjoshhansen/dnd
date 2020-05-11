@@ -8,7 +8,7 @@
     "build:prod": "npm run build",
     "build:watch": "tsc -w",
     "build": "tsc",
-    "clean": "rm -r ./dist && rm -r ./node_modules",
+    "clean": "rm -rf ./dist && rm -rf ./node_modules",
     "x-test:watch": "tsc-watch --onSuccess \"npm test\"",
     "x-test": "mocha -r ts-node/register src/**/*.spec.ts",
     "list-players": "node --require source-map-support/register $NODE_DEBUG_OPTION ./dist/list-players.js",
