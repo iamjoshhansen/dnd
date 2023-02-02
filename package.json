@@ -33,6 +33,6 @@
     "prettier": "^2.0.5"
   },
   "dependencies": {
-    "lerna": "^3.20.2"
+    "lerna": "^6.4.1"
   }
 }
